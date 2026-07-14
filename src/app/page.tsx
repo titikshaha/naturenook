@@ -13,10 +13,10 @@ import {
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const categories = [
-  { label: "Ayurvedic", href: "/catalogue?category=ayurvedic", icon: "🌿" },
-  { label: "Cosmetics", href: "/catalogue?category=cosmetic", icon: "🌸" },
-  { label: "Nutraceutical", href: "/catalogue?category=nutraceutical", icon: "💊" },
-  { label: "Homecare", href: "/catalogue?category=homecare", icon: "🏠" },
+  { label: "Ayurvedic",    href: "/catalogue?category=ayurvedic",    icon: "🌿", image: "/category1.png" },
+  { label: "Cosmetics",    href: "/catalogue?category=cosmetic",     icon: "🌸", image: "/category3.png" },
+  { label: "Nutraceutical", href: "/catalogue?category=nutraceutical", icon: "💊", image: "/category4.png" },
+  { label: "Homecare",     href: "/catalogue?category=homecare",     icon: "🏠", image: "/category2.png" },
 ];
 
 const featuredProducts = [
@@ -96,12 +96,38 @@ function ImagePlaceholder({
   );
 }
 
-// Hero image: fully transparent, no background — drop image here
-function HeroImageSlot({ className = "" }: { className?: string }) {
+/**
+ * MOBILE hero image — visible only on screens < md (below 768px)
+ * Recommended: square or portrait image, e.g. 600×600px or 600×700px
+ * Sits between the headline/body text and the CTA buttons on mobile.
+ */
+function HeroImageMobile() {
   return (
-    <div className={`relative ${className}`}>
-      {/* Replace this div's contents with <Image /> when ready */}
-      <div className="w-full h-full" />
+    <div className="md:hidden w-full max-w-xs mx-auto">
+      {/* ↓ Replace with your mobile hero image */}
+      <img
+        src="/hero.png"
+        alt="Nature Nook"
+        className="w-full h-auto object-contain"
+      />
+    </div>
+  );
+}
+
+/**
+ * DESKTOP hero image — visible only on screens ≥ md (768px+)
+ * Recommended: landscape image, e.g. 800×600px or 900×700px
+ * Fills the right column of the two-column hero flex layout.
+ */
+function HeroImageDesktop() {
+  return (
+    <div className="hidden md:flex flex-1 items-center justify-center">
+      {/* ↓ Replace with your desktop hero image */}
+      <img
+        src="/hero.png"
+        alt="Nature Nook"
+        className="w-200 h-auto max-h-[620px] object-contain"
+      />
     </div>
   );
 }
@@ -113,59 +139,87 @@ export default function Home() {
     <div className="flex flex-col">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="bg-secondary/30 overflow-hidden">
-        <div className="container mx-auto px-4 py-12 md:py-20 flex flex-col md:flex-row items-center gap-10 md:gap-16">
-          {/* Text */}
-          <div className="flex-1 space-y-6 text-center md:text-left">
+        {/* ── MOBILE layout: stacked column ───────────────────────────────── */}
+        <div className="md:hidden container mx-auto px-4 py-10 flex flex-col items-center gap-6 text-center">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-xs font-medium text-primary">
+            <LeafyGreen className="h-3.5 w-3.5" />
+            100% Botanical · Standardized Quality
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground leading-tight">
+            Pure Herbal{" "}
+            <span className="text-primary">Excellence</span>{" "}
+            From Nature
+          </h1>
+          <p className="text-muted-foreground text-base leading-relaxed max-w-sm">
+            Nature Nook manufactures and distributes 150+ premium herbal
+            extracts for Ayurvedic medicines, cosmetics, and nutraceuticals.
+          </p>
+
+          {/* Mobile hero image — square, centered, natural height */}
+          <HeroImageMobile />
+
+          <div className="flex flex-col gap-3 w-full max-w-xs">
+            <Link href="/catalogue">
+              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-7 h-11 text-sm font-semibold shadow-md">
+                Browse Catalogue <ArrowRight className="ml-1.5 h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/vendor">
+              <Button variant="outline" className="w-full rounded-full px-7 h-11 text-sm font-semibold border-primary/30">
+                Wholesale Inquiry
+              </Button>
+            </Link>
+          </div>
+
+          <div className="flex flex-wrap gap-2 justify-center">
+            {["GMP Certified", "Lab Tested", "150+ SKUs", "PAN India Delivery"].map((t) => (
+              <span key={t} className="text-xs bg-background border border-border rounded-full px-3 py-1 text-muted-foreground">
+                ✓ {t}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* ── DESKTOP layout: two-column flex row ─────────────────────────── */}
+        <div className="hidden md:flex container mx-auto px-4 flex-row items-center gap-16">
+          {/* Left: text */}
+          <div className="flex-1 space-y-6 text-left">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-xs font-medium text-primary">
               <LeafyGreen className="h-3.5 w-3.5" />
               100% Botanical · Standardized Quality
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground leading-tight">
+            <h1 className="text-6xl font-bold tracking-tight text-foreground leading-tight">
               Pure Herbal{" "}
               <span className="text-primary">Excellence</span>{" "}
               From Nature
             </h1>
-            <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
+            <p className="text-muted-foreground text-lg leading-relaxed max-w-xl">
               Nature Nook manufactures and distributes 150+ premium herbal
-              extracts for Ayurvedic medicines, cosmetics, and nutraceuticals —
-              straight from Indore.
+              extracts for Ayurvedic medicines, cosmetics, and nutraceuticals.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+            <div className="flex flex-row gap-3">
               <Link href="/catalogue">
-                <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-7 h-11 text-sm font-semibold shadow-md hover:shadow-lg transition-all">
-                  Browse Catalogue
-                  <ArrowRight className="ml-1.5 h-4 w-4" />
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-7 h-11 text-sm font-semibold shadow-md hover:shadow-lg transition-all">
+                  Browse Catalogue <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Button>
               </Link>
               <Link href="/vendor">
-                <Button
-                  variant="outline"
-                  className="w-full sm:w-auto rounded-full px-7 h-11 text-sm font-semibold border-primary/30 hover:bg-primary/5 transition-all"
-                >
+                <Button variant="outline" className="rounded-full px-7 h-11 text-sm font-semibold border-primary/30 hover:bg-primary/5 transition-all">
                   Wholesale Inquiry
                 </Button>
               </Link>
             </div>
-
-            {/* Trust pills */}
-            <div className="flex flex-wrap gap-3 justify-center md:justify-start pt-2">
-              {["GMP Certified", "Lab Tested", "150+ SKUs", "PAN India Delivery"].map(
-                (t) => (
-                  <span
-                    key={t}
-                    className="text-xs bg-background border border-border rounded-full px-3 py-1 text-muted-foreground"
-                  >
-                    ✓ {t}
-                  </span>
-                )
-              )}
+            <div className="flex flex-wrap gap-3 pt-2">
+              {["GMP Certified", "Lab Tested", "150+ SKUs", "PAN India Delivery"].map((t) => (
+                <span key={t} className="text-xs bg-background border border-border rounded-full px-3 py-1 text-muted-foreground">
+                  ✓ {t}
+                </span>
+              ))}
             </div>
           </div>
 
-          {/* Hero image — bg-free slot */}
-          <div className="flex-1 w-full max-w-sm md:max-w-none mx-auto">
-            <HeroImageSlot className="w-full aspect-[4/3]" />
-          </div>
+          {/* Right: desktop hero image — landscape, fills column */}
+          <HeroImageDesktop />
         </div>
       </section>
 
@@ -182,19 +236,23 @@ export default function Home() {
           </div>
 
           {/* Circular category cards — scrollable on mobile */}
-          <div className="flex items-start justify-center gap-6 md:gap-10 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-start justify-center gap-6 md:gap-10 overflow-x-auto pb-2 [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden">
             {[
-              { label: "All", href: "/catalogue", count: "150+" },
-              ...categories.map((c) => ({ label: c.label, href: c.href, count: "30+" })),
+              { label: "All", href: "/catalogue", count: "150+", image: "/cat-all.png" },
+              ...categories.map((c) => ({ label: c.label, href: c.href, count: "30+", image: c.image })),
             ].map((cat) => (
               <Link
                 key={cat.label}
                 href={cat.href}
                 className="group flex flex-col items-center gap-3 shrink-0"
               >
-                {/* Circle image slot */}
-                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-border group-hover:border-primary transition-colors duration-200 bg-secondary/40 flex items-center justify-center">
-                  <Leaf className="h-8 w-8 text-primary/30 group-hover:text-primary/60 transition-colors" />
+                {/* Circle image — one per category */}
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-border group-hover:border-primary transition-colors duration-200">
+                  <img
+                    src={cat.image}
+                    alt={cat.label}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="text-center">
                   <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
@@ -381,7 +439,7 @@ export default function Home() {
             <Link href="/vendor">
               <Button
                 variant="outline"
-                className="w-full sm:w-auto rounded-full px-8 h-11 font-semibold border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 transition-all"
+                className="w-full sm:w-auto rounded-full px-8 h-11 font-semibold border-primary-foreground/40 text-primary-background hover:bg-primary-foreground/10 transition-all"
               >
                 Wholesale Inquiry
               </Button>
