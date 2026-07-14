@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { MixedHeroCarousel } from "@/components/banners/MixedHeroCarousel";
+import { TrustStatsCarousel } from "@/components/banners/TrustStatsCarousel";
 import {
   FlaskConical,
   ShieldCheck,
@@ -147,35 +149,12 @@ export default function Home() {
   return (
     <div className="flex flex-col">
 
-      {/* ══════════════════════════════════════════════════════════════════════
-          HERO BANNER — full-width ad slide placeholder
-          Replace the inner div with your <Image> or a carousel component.
-          Recommended desktop: 1440×560px   Mobile: 768×500px
-      ══════════════════════════════════════════════════════════════════════ */}
-      <section className="w-full bg-secondary/30">
-        {/* Desktop banner */}
-        <div className="hidden md:block w-full aspect-1440/500 bg-secondary/40 relative">
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
-            <Leaf className="h-12 w-12 text-primary/20" />
-            <p className="text-sm text-muted-foreground font-medium">
-              Hero Banner · Recommended 1440 × 500 px
-            </p>
-            <p className="text-xs text-muted-foreground/60">
-              Replace this block with your banner image or ad carousel
-            </p>
-          </div>
-        </div>
-        {/* Mobile banner */}
-        <div className="md:hidden w-full aspect-768/500 bg-secondary/40 relative">
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center px-4">
-            <Leaf className="h-8 w-8 text-primary/20" />
-            <p className="text-xs text-muted-foreground font-medium">
-              Mobile Banner · 768 × 500 px
-            </p>
-          </div>
-        </div>
-      </section>
-
+      {/* ── Main Hero Carousel (3 distinct slide types) ── */}
+      <MixedHeroCarousel />
+      
+      {/* ── 4th Carousel Component (Stats) left as it is ── */}
+      
+     
       {/* ══════════════════════════════════════════════════════════════════════
           PRODUCTS — immediately after banner
       ══════════════════════════════════════════════════════════════════════ */}
@@ -246,7 +225,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-
+            
           {/* Mobile — view all */}
           <div className="mt-6 md:hidden">
             <Link href="/catalogue">
@@ -257,6 +236,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+       <TrustStatsCarousel />
 
       {/* ══════════════════════════════════════════════════════════════════════
           SHOP BY CATEGORY
