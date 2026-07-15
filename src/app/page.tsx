@@ -285,7 +285,7 @@ export default function Home() {
           <div className="rounded-2xl bg-secondary/30 border border-border overflow-hidden flex flex-col md:flex-row">
             <div className="flex-1 p-8 md:p-12 flex flex-col justify-center gap-5">
               <span className="w-fit rounded-full bg-primary text-primary-foreground px-4 py-1.5 text-sm font-semibold">
-                GET –20% OFF
+                GET 20% OFF
               </span>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
                 Your First Purchase

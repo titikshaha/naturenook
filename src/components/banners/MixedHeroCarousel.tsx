@@ -123,7 +123,7 @@ export function MixedHeroCarousel() {
               </div>
             </div>
             <div className="flex-1 flex items-center justify-center">
-              <img src="/hero-desktop.png" alt="Herbal extracts hero" className="w-full max-w-md h-auto max-h-[380px] object-contain drop-shadow-lg" />
+              <img src="/hero.png" alt="Herbal extracts hero" className="w-200 max-w-md h-auto max-h-95 object-contain drop-shadow-lg" />
             </div>
           </div>
           {/* Mobile */}
@@ -132,7 +132,7 @@ export function MixedHeroCarousel() {
               <LeafyGreen className="h-3.5 w-3.5" /> 100% Botanical
             </span>
             <h1 className="text-3xl font-bold tracking-tight leading-tight">Pure Herbal <span className="text-primary">Excellence</span> From Nature</h1>
-            <img src="/hero-mobile.png" alt="Herbal extracts hero" className="w-full max-w-[260px] h-auto object-contain drop-shadow-md" />
+            <img src="/hero.png" alt="Herbal extracts hero" className="w-full max-w-[260px] h-auto object-contain drop-shadow-md" />
             <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">Nature Nook manufactures 150+ premium herbal extracts for medicines, cosmetics, and nutraceuticals.</p>
             <div className="flex flex-col gap-2.5 w-full max-w-xs">
               <Link href="/catalogue"><Button className="w-full rounded-full bg-primary text-primary-foreground font-semibold shadow-md">Browse Catalogue <ArrowRight className="ml-1.5 h-4 w-4" /></Button></Link>
