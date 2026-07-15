@@ -2,15 +2,16 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Menu, X, Search, User } from "lucide-react";
+import { ShoppingCart, Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { SearchBar } from "./SearchBar";
 
 const navLinks = [
   { label: "Products", href: "/catalogue" },
   { label: "Wholesale", href: "/vendor" },
-  { label: "About", href: "#" },
-  { label: "Find Us", href: "#" },
+  { label: "About", href: "/about" },
+  { label: "Find Us", href: "/find-us" },
 ];
 
 export function Navbar() {
@@ -20,7 +21,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full">
       {/* ── Announcement bar ── */}
       <div className="bg-primary text-primary-foreground text-center text-xs py-2 px-4 font-medium tracking-wide">
-        Free shipping on orders above ₹999 &nbsp;·&nbsp; GMP Certified &nbsp;·&nbsp; 150+ Premium Extracts
+        Free shipping on orders above ₹999 &nbsp;·&nbsp; GMP Certified &nbsp;·&nbsp; 150+ Premium powders
       </div>
 
       {/* ── Main navbar ── */}
@@ -48,9 +49,7 @@ export function Navbar() {
 
           {/* Right actions */}
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="hidden md:inline-flex text-foreground/70 hover:text-primary" aria-label="Search">
-              <Search className="h-5 w-5" />
-            </Button>
+            <SearchBar />
             <Link href="/account">
               <Button variant="ghost" size="icon" className="hidden md:inline-flex text-foreground/70 hover:text-primary" aria-label="Account">
                 <User className="h-5 w-5" />

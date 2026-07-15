@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Leaf, Mail, MapPin, Phone } from "lucide-react";
 
 const shopLinks = [
-  { label: "All Extracts", href: "/catalogue" },
+  { label: "All powders", href: "/catalogue" },
   { label: "Ayurvedic", href: "/catalogue?category=ayurvedic" },
   { label: "Cosmetic Grade", href: "/catalogue?category=cosmetic" },
   { label: "Nutraceutical", href: "/catalogue?category=nutraceutical" },
@@ -28,7 +28,7 @@ export function Footer() {
               <span className="font-bold text-lg text-primary tracking-tight">Nature Nook</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Manufacturing and distributing 150+ premium herbal extracts for
+              Manufacturing and distributing 150+ premium herbal powders for
               Ayurvedic medicines, herbal cosmetics, and nutraceuticals.
             </p>
           </div>
@@ -77,7 +77,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-primary shrink-0" />
-                <a href="tel:+91" className="hover:text-primary transition-colors">+91 00000 00000</a>
+                <a href="tel:+91 74891 74084" className="hover:text-primary transition-colors">+91 74891 74084</a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary shrink-0" />

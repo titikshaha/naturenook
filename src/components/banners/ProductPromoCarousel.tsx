@@ -17,7 +17,7 @@ const slides = [
   {
     tag: "Best Seller",
     name: "Ashwagandha",
-    suffix: "Extract",
+    suffix: "powder",
     scientific: "Withania somnifera",
     potency: "5% Withanolides",
     tags: ["Adaptogen", "Stress Relief", "Vitality", "Ayurvedic Grade"],
@@ -35,7 +35,7 @@ const slides = [
   {
     tag: "Top Rated",
     name: "Brahmi",
-    suffix: "Extract",
+    suffix: "powder",
     scientific: "Bacopa monnieri",
     potency: "20% Bacosides",
     tags: ["Memory & Focus", "Neuroprotective", "Nootropic", "Ayurvedic"],
@@ -44,7 +44,7 @@ const slides = [
   {
     tag: "Trending",
     name: "Moringa",
-    suffix: "Leaf Extract",
+    suffix: "Leaf powder",
     scientific: "Moringa oleifera",
     potency: "5% Isothiocyanates",
     tags: ["Antioxidant", "Vitamin Rich", "Superfood", "Supplement Grade"],

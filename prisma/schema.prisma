@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String?
+  firstName     String?
+  lastName      String?
+  phone         String?
+  role          String    @default("CUSTOMER") // CUSTOMER, VENDOR, ADMIN
+  companyName   String?
+  gstin         String?
+  
+  addresses     Address[]
+  orders        Order[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Address {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          String    // "BILLING" or "SHIPPING"
+  street        String
+  city          String
+  state         String
+  stateCode     String?
+  postalCode    String
+  country       String    @default("India")
+  
+  ordersBilling   Order[]   @relation("BillingAddress")
+  ordersShipping  Order[]   @relation("ShippingAddress")
+
+  createdAt     DateTime  @default(now())
+}
+
+model Order {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id])
+  
+  status            String    @default("PENDING") // PENDING, PAID, SHIPPED, DELIVERED, CANCELLED
+  totalAmount       Float
+  
+  billingAddressId  String
+  billingAddress    Address   @relation("BillingAddress", fields: [billingAddressId], references: [id])
+  
+  shippingAddressId String
+  shippingAddress   Address   @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  
+  transactionId     String?
+  trackingId        String?
+  invoiceNumber     String?
+  invoiceUrl        String?
+  
+  notes             String?
+  
+  items             OrderItem[]
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Product {
+  id              String    @id @default(cuid())
+  name            String
+  scientificName  String?
+  category        String    // Ayurvedic, Cosmetic, Nutraceutical, Homecare
+  form            String    // CAPSULE_EXTRACT or POWDER
+  potency         String?
+  description     String?
+  imageUrl        String?
+  price           Float?
+  
+  orderItems      OrderItem[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model OrderItem {
+  id            String    @id @default(cuid())
+  orderId       String
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  productId     String
+  product       Product   @relation(fields: [productId], references: [id])
+  
+  productName   String    // snapshot of name at time of order
+  quantity      Int
+  priceAtTime   Float
+}

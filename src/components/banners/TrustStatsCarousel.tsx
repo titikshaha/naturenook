@@ -19,7 +19,7 @@ const slides = [
     cta: { label: "Browse Catalogue", href: "/catalogue" },
     accent: "#34d399",
     stats: [
-      { value: "150+", unit: "", label: "Herbal Extracts", sub: "Ayurvedic, cosmetic & nutraceutical grade" },
+      { value: "150+", unit: "", label: "Herbal powders", sub: "Ayurvedic, cosmetic & nutraceutical grade" },
       { value: "200+", unit: "", label: "Brand Partners", sub: "Pharmaceutical & FMCG brands served" },
       { value: "99.8", unit: "%", label: "Batch Pass Rate", sub: "Consistent quality across all SKUs" },
       { value: "8+", unit: "", label: "Years Expertise", sub: "Decades of botanical knowledge" },

@@ -65,7 +65,7 @@ function CirclePattern() {
 export function MixedHeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
-  const totalSlides = 3;
+  const totalSlides = 6;
 
   const goTo = useCallback((i: number) => {
     setCurrent(i);
@@ -112,7 +112,7 @@ export function MixedHeroCarousel() {
                 Pure Herbal <span className="text-primary">Excellence</span> From Nature
               </h1>
               <p className="text-muted-foreground text-base lg:text-lg leading-relaxed max-w-lg">
-                Nature Nook manufactures and distributes 150+ premium herbal extracts for Ayurvedic medicines, cosmetics, and nutraceuticals — straight from Indore.
+                Nature Nook manufactures and distributes 150+ premium herbal powders for Ayurvedic medicines, cosmetics, and nutraceuticals — straight from Indore.
               </p>
               <div className="flex gap-3 pt-1">
                 <Link href="/catalogue"><Button className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-7 h-11 font-semibold shadow-md transition-all">Browse Catalogue <ArrowRight className="ml-1.5 h-4 w-4" /></Button></Link>
@@ -123,7 +123,7 @@ export function MixedHeroCarousel() {
               </div>
             </div>
             <div className="flex-1 flex items-center justify-center">
-              <img src="/hero.png" alt="Herbal extracts hero" className="w-200 max-w-md h-auto max-h-95 object-contain drop-shadow-lg" />
+              <img src="/hero.png" alt="Herbal powders hero" className="w-200 max-w-md h-auto max-h-95 object-contain drop-shadow-lg" />
             </div>
           </div>
           {/* Mobile */}
@@ -132,8 +132,8 @@ export function MixedHeroCarousel() {
               <LeafyGreen className="h-3.5 w-3.5" /> 100% Botanical
             </span>
             <h1 className="text-3xl font-bold tracking-tight leading-tight">Pure Herbal <span className="text-primary">Excellence</span> From Nature</h1>
-            <img src="/hero.png" alt="Herbal extracts hero" className="w-full max-w-[260px] h-auto object-contain drop-shadow-md" />
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">Nature Nook manufactures 150+ premium herbal extracts for medicines, cosmetics, and nutraceuticals.</p>
+            <img src="/hero.png" alt="Herbal powders hero" className="w-full max-w-[260px] h-auto object-contain drop-shadow-md" />
+            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">Nature Nook manufactures 150+ premium herbal powders for medicines, cosmetics, and nutraceuticals.</p>
             <div className="flex flex-col gap-2.5 w-full max-w-xs">
               <Link href="/catalogue"><Button className="w-full rounded-full bg-primary text-primary-foreground font-semibold shadow-md">Browse Catalogue <ArrowRight className="ml-1.5 h-4 w-4" /></Button></Link>
               <Link href="/vendor"><Button variant="outline" className="w-full rounded-full border-primary/30">Wholesale Inquiry</Button></Link>
@@ -142,7 +142,14 @@ export function MixedHeroCarousel() {
         </div>
 
         {/* ================================================================= */}
-        {/* SLIDE 2: Editorial Center Text (Color Scheme: Deep Terracotta)    */}
+        {/* SLIDE 2: Banner 1                                                 */}
+        {/* ================================================================= */}
+        <div className="min-w-full relative bg-secondary/10 overflow-hidden flex items-center justify-center">
+          <img src="/banner1.png" alt="Promo Banner 1" className="w-full h-full object-cover object-center max-h-[420px] lg:max-h-[500px]" />
+        </div>
+
+        {/* ================================================================= */}
+        {/* SLIDE 3: Editorial Center Text (Color Scheme: Deep Terracotta)    */}
         {/* ================================================================= */}
         <div className="min-w-full relative overflow-hidden" style={{ background: "#2a1610" /* Very deep warm brown */ }}>
           <GeometricDecor color="#e48a5c" />
@@ -151,14 +158,14 @@ export function MixedHeroCarousel() {
               className="inline-block text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full border"
               style={{ color: "#e48a5c", borderColor: "#e48a5c", background: "rgba(228, 138, 92, 0.08)" }}
             >
-              Trending Extract
+              Trending powder
             </span>
             <div className="space-y-1 md:space-y-2">
               <h2 className="font-bold leading-none tracking-tight text-[#fdf6f0]" style={{ fontSize: "clamp(2.8rem, 9vw, 7rem)", lineHeight: 1 }}>
                 Ashwagandha
               </h2>
               <p className="font-light tracking-[0.3em] uppercase text-[#e48a5c]" style={{ fontSize: "clamp(0.85rem, 2.5vw, 1.4rem)" }}>
-                Extract
+                powder
               </p>
             </div>
             <div className="flex items-center gap-4 w-full max-w-sm">
@@ -191,7 +198,14 @@ export function MixedHeroCarousel() {
         </div>
 
         {/* ================================================================= */}
-        {/* SLIDE 3: Green Text Grid Layout (White Background)                */}
+        {/* SLIDE 4: Banner 2                                                 */}
+        {/* ================================================================= */}
+        <div className="min-w-full relative bg-secondary/10 overflow-hidden flex items-center justify-center">
+          <img src="/banner2.png" alt="Promo Banner 2" className="w-full h-full object-cover object-center max-h-[420px] lg:max-h-[500px]" />
+        </div>
+
+        {/* ================================================================= */}
+        {/* SLIDE 5: Green Text Grid Layout (White Background)                */}
         {/* ================================================================= */}
         <div className="min-w-full relative bg-background overflow-hidden">
           <CirclePattern />
@@ -271,14 +285,27 @@ export function MixedHeroCarousel() {
           </div>
         </div>
 
+        {/* ================================================================= */}
+        {/* SLIDE 6: Banner 3                                                 */}
+        {/* ================================================================= */}
+        <div className="min-w-full relative bg-secondary/10 overflow-hidden flex items-center justify-center">
+          <img src="/banner3.png" alt="Promo Banner 3" className="w-full h-full object-cover object-center max-h-[420px] lg:max-h-[500px]" />
+        </div>
+
       </div>
 
       {/* ── Radio dots (absolute at bottom center) ── */}
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-20">
         {Array.from({ length: totalSlides }).map((_, i) => {
-          // Dot color logic based on slide index
-          const activeColor = i === 0 ? "hsl(var(--primary))" : i === 1 ? "#e48a5c" : "hsl(var(--primary))";
-          const inactiveColor = i === 0 ? "hsla(var(--primary), 0.3)" : i === 1 ? "rgba(228, 138, 92, 0.3)" : "hsla(var(--primary), 0.3)";
+          // Slide 0: Sage Green (primary)
+          // Slide 1: Banner 1 (white/gray/primary)
+          // Slide 2: Terracotta (#e48a5c)
+          // Slide 3: Banner 2 
+          // Slide 4: Green Text (primary)
+          // Slide 5: Banner 3
+          
+          const getActiveColor = (index: number) => index === 2 ? "#e48a5c" : "hsl(var(--primary))";
+          const getInactiveColor = (index: number) => index === 2 ? "rgba(228, 138, 92, 0.4)" : "hsla(var(--primary), 0.4)";
           
           return (
             <button
@@ -286,12 +313,9 @@ export function MixedHeroCarousel() {
               id={`mixed-slide-${i}`}
               aria-label={`Go to slide ${i + 1}`}
               onClick={() => goTo(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${i === current ? "w-7" : "w-2"}`}
+              className={`h-2 rounded-full transition-all duration-300 shadow-sm ${i === current ? "w-7" : "w-2"}`}
               style={{
-                // we want the dot color to contrast well based on the CURRENT slide's background
-                background: i === current 
-                  ? (current === 0 ? "hsl(var(--primary))" : current === 1 ? "#e48a5c" : "hsl(var(--primary))")
-                  : (current === 0 ? "hsla(var(--primary), 0.3)" : current === 1 ? "rgba(228, 138, 92, 0.3)" : "hsla(var(--primary), 0.3)")
+                background: i === current ? getActiveColor(current) : getInactiveColor(current)
               }}
             />
           );

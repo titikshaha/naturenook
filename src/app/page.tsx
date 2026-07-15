@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MixedHeroCarousel } from "@/components/banners/MixedHeroCarousel";
 import { TrustStatsCarousel } from "@/components/banners/TrustStatsCarousel";
@@ -24,75 +25,83 @@ const categories = [
 const featuredProducts = [
   {
     id: "1",
-    name: "Ashwagandha Extract",
+    name: "Ashwagandha Powder",
     scientific: "Withania somnifera",
     potency: "5% Withanolides",
     category: "Ayurvedic",
     rating: 4.8,
     reviews: 124,
+    image: "/images/products/Ashwagandha3.jpg",
   },
   {
     id: "2",
-    name: "Tulsi Extract",
-    scientific: "Ocimum sanctum",
-    potency: "2% Ursolic Acid",
+    name: "Shatavari Powder",
+    scientific: "Asparagus racemosus",
+    potency: "20% Saponins",
     category: "Ayurvedic",
     rating: 4.7,
     reviews: 89,
+    image: "/images/products/Shatavari7.jpg",
   },
   {
     id: "3",
-    name: "Gymnema Extract",
+    name: "Gymnema Powder (Gudmar)",
     scientific: "Gymnema sylvestre",
     potency: "25% Gymnemic Acid",
     category: "Nutraceutical",
     rating: 4.9,
     reviews: 67,
+    image: "/images/products/Gudmar19.jpg",
   },
   {
     id: "4",
-    name: "Neem Extract",
-    scientific: "Azadirachta indica",
-    potency: "2.5% Azadirachtin",
-    category: "Cosmetic",
+    name: "Spirulina Powder",
+    scientific: "Arthrospira platensis",
+    potency: "60% Protein",
+    category: "Nutraceutical",
     rating: 4.6,
     reviews: 102,
+    image: "/images/products/Spirulina11.jpg",
   },
   {
     id: "5",
-    name: "Brahmi Extract",
+    name: "Brahmi Powder",
     scientific: "Bacopa monnieri",
     potency: "20% Bacosides",
     category: "Ayurvedic",
     rating: 4.8,
     reviews: 78,
+    image: "/images/products/Brahmi15.jpg",
   },
   {
     id: "6",
-    name: "Moringa Extract",
+    name: "Moringa Powder",
     scientific: "Moringa oleifera",
     potency: "5% Isothiocyanates",
     category: "Nutraceutical",
     rating: 4.7,
     reviews: 95,
+    image: "/images/products/Moringa1.jpg",
   },
   {
     id: "7",
-    name: "Aloe Vera Extract",
-    scientific: "Aloe barbadensis",
-    potency: "40% Polysaccharides",
+    name: "Bhringraj Powder",
+    scientific: "Eclipta prostrata",
+    potency: "10% Wedelolactone",
     category: "Cosmetic",
     rating: 4.5,
     reviews: 143,
+    image: "/images/products/Bhringraj21.jpg",
   },
   {
     id: "8",
-    name: "Triphala Extract",
+    name: "Triphala Powder",
     scientific: "Three-fruit blend",
     potency: "20% Tannins",
     category: "Ayurvedic",
     rating: 4.6,
     reviews: 58,
+    image: "/images/products/Triphala23.jpg",
   },
 ];
 
@@ -104,7 +113,7 @@ const whyChoose = [
   },
   {
     icon: FlaskConical,
-    title: "150+ Extracts",
+    title: "150+ Powders",
     desc: "Extensive range for Ayurvedic, cosmetic, nutraceutical, and homecare industries.",
   },
   {
@@ -149,12 +158,11 @@ export default function Home() {
   return (
     <div className="flex flex-col">
 
-      {/* ── Main Hero Carousel (3 distinct slide types) ── */}
+      {/* ── Main Hero Carousel (3 distinct slide types + 3 banners) ── */}
       <MixedHeroCarousel />
       
       {/* ── 4th Carousel Component (Stats) left as it is ── */}
       
-     
       {/* ══════════════════════════════════════════════════════════════════════
           PRODUCTS — immediately after banner
       ══════════════════════════════════════════════════════════════════════ */}
@@ -168,7 +176,7 @@ export default function Home() {
                 Our Collection
               </p>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
-                Featured Extracts
+                Featured Powders
               </h2>
             </div>
             <Link
@@ -187,8 +195,18 @@ export default function Home() {
                 className="group rounded-xl border border-border bg-card overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-200 flex flex-col"
               >
                 {/* Product image */}
-                <div className="relative overflow-hidden">
-                  <ImagePlaceholder className="w-full aspect-square" />
+                <div className="relative overflow-hidden group/img">
+                  {product.image ? (
+                    <Image 
+                      src={product.image} 
+                      alt={product.name} 
+                      width={400} 
+                      height={400} 
+                      className="w-full aspect-square object-cover group-hover/img:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <ImagePlaceholder className="w-full aspect-square" />
+                  )}
                   {/* Category badge — overlaid */}
                   <span className="absolute top-2 left-2 text-[10px] md:text-xs rounded-full bg-background/90 border border-border px-2 py-0.5 font-medium text-foreground/70">
                     {product.category}
@@ -349,7 +367,7 @@ export default function Home() {
       <section className="py-12 md:py-16 bg-primary">
         <div className="container mx-auto px-4 text-center space-y-5">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground">
-            Ready to Source Premium Herbal Extracts?
+            Ready to Source Premium Herbal Powders?
           </h2>
           <p className="text-primary-foreground/80 max-w-xl mx-auto text-sm md:text-base">
             Join hundreds of manufacturers and brands who trust Nature Nook for

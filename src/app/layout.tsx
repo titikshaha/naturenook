@@ -11,8 +11,8 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: "Nature Nook | Premium Herbal Extracts",
-  description: "Manufacturing and distribution of 150+ premium herbal extracts from Indore.",
+  title: "Nature Nook | Premium Herbal powders",
+  description: "Manufacturing and distribution of 150+ premium herbal powders from Indore.",
 };
 
 export default function RootLayout({

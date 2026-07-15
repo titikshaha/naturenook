@@ -62,7 +62,7 @@ const slides = [
   {
     category: "Skin & Beauty",
     headline: "Nature's secret to radiant skin",
-    sub: "Cosmetic-grade botanical extracts with zero harmful chemicals.",
+    sub: "Cosmetic-grade botanical powders with zero harmful chemicals.",
     benefits: [
       {
         icon: (
