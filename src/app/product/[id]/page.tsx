@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { ShoppingCart, Star, ShieldCheck, Truck, ArrowLeft, Leaf, CheckCircle2 } from "lucide-react";
 
 export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
@@ -115,10 +116,18 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button className="flex-1 h-12 text-base font-bold rounded-xl shadow-lg hover:shadow-primary/25 transition-all">
+                <AddToCartButton 
+                  product={{
+                    id: String(product.id),
+                    name: String(product.name),
+                    price: product.price,
+                    imageUrl: product.imageUrl,
+                  }}
+                  className="flex-1 h-12 text-base font-bold rounded-xl shadow-lg hover:shadow-primary/25 transition-all"
+                >
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   Add to Cart
-                </Button>
+                </AddToCartButton>
                 <Link href="/find-us" className="flex-1">
                   <Button variant="outline" className="w-full h-12 text-base font-bold rounded-xl border-primary text-primary hover:bg-primary/10">
                     Bulk Enquiry

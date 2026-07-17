@@ -6,6 +6,7 @@ import { ShoppingCart, Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { SearchBar } from "./SearchBar";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 
 const navLinks = [
   { label: "Products", href: "/catalogue" },
@@ -55,12 +56,7 @@ export function Navbar() {
                 <User className="h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/cart">
-              <Button variant="ghost" size="icon" className="relative text-foreground/70 hover:text-primary" aria-label="Cart">
-                <ShoppingCart className="h-5 w-5" />
-                <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary" />
-              </Button>
-            </Link>
+            <CartDrawer />
             {/* Mobile hamburger */}
             <Button
               variant="ghost"

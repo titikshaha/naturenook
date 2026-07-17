@@ -3,7 +3,7 @@ import path from "path";
 import { PrismaClient } from "@prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import Database from "better-sqlite3";
-import { stringify } from "csv-stringify/sync"; // We might need to install csv-stringify, or we can just write a simple CSV writer.
+
 
 // Let's write a simple CSV writer to avoid dependencies
 function toCSV(data: any[][]): string {
@@ -43,7 +43,7 @@ async function main() {
     "Description"
   ];
 
-  const rows = [headers];
+  const rows: string[][] = [headers];
 
   for (const p of products) {
     rows.push([
@@ -52,8 +52,8 @@ async function main() {
       p.category,
       p.form,
       p.potency || "",
-      p.price || "",
-      p.imageUrl ? p.imageUrl.split('/').pop() : "", // Image 1 defaults to what we found
+      p.price ? String(p.price) : "",
+      p.imageUrl ? String(p.imageUrl.split('/').pop()) : "", // Image 1 defaults to what we found
       "", // Image 2
       "", // Image 3
       "", // Image 4

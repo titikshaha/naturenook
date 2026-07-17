@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Filter, ShoppingCart, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Filter, Search, Star, ShoppingCart } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 
@@ -126,7 +126,7 @@ export default async function CataloguePage(props: {
                     key={product.id}
                     className="group rounded-xl border border-border bg-card overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-200 flex flex-col"
                   >
-                    <div className="relative overflow-hidden group/img aspect-square bg-secondary/40 flex items-center justify-center">
+                    <Link href={`/product/${String(product.id)}`} className="relative overflow-hidden group/img aspect-square bg-secondary/40 flex items-center justify-center block">
                       {product.imageUrl ? (
                         <Image 
                           src={product.imageUrl} 
@@ -141,7 +141,7 @@ export default async function CataloguePage(props: {
                       <span className="absolute top-2 left-2 text-[10px] md:text-xs rounded-full bg-background/90 border border-border px-2 py-0.5 font-medium text-foreground/70">
                         {product.category}
                       </span>
-                    </div>
+                    </Link>
 
                     <div className="p-4 flex flex-col flex-1 gap-2">
                       <div>
@@ -170,12 +170,18 @@ export default async function CataloguePage(props: {
                           <p className="font-bold text-foreground">₹{product.price?.toLocaleString() || "TBA"}</p>
                           <p className="text-[10px] text-muted-foreground uppercase">{product.form === "CAPSULE_EXTRACT" ? "Extract" : "Powder"}</p>
                         </div>
-                        <Link href={`/product/${String(product.id)}`} className="block">
-                          <Button className="w-full h-9 text-xs md:text-sm rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all">
-                            <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
-                            Add to Cart
-                          </Button>
-                        </Link>
+                        <AddToCartButton 
+                          product={{
+                            id: String(product.id),
+                            name: String(product.name),
+                            price: product.price,
+                            imageUrl: product.imageUrl,
+                          }}
+                          className="w-full h-9 text-xs md:text-sm rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all"
+                        >
+                          <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
+                          Add to Cart
+                        </AddToCartButton>
                       </div>
                     </div>
                   </div>
