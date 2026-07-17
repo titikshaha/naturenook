@@ -43,3 +43,6 @@ next-env.d.ts
 /src/generated/prisma
 
 /raw files
+
+
+Master_Product_List.csv
