@@ -70,12 +70,12 @@ export function MixedHeroCarousel() {
   const goTo = useCallback((i: number) => {
     setCurrent(i);
     setPaused(true);
-    setTimeout(() => setPaused(false), 8000);
+    setTimeout(() => setPaused(false), 6000);
   }, []);
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(() => setCurrent((p) => (p + 1) % totalSlides), 7000);
+    const t = setInterval(() => setCurrent((p) => (p + 1) % totalSlides), 4000);
     return () => clearInterval(t);
   }, [paused, totalSlides]);
 

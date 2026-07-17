@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Filter, ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -128,7 +130,7 @@ export default async function CataloguePage(props: {
                       {product.imageUrl ? (
                         <Image 
                           src={product.imageUrl} 
-                          alt={product.name} 
+                          alt={String(product.name || '')} 
                           fill
                           className="object-cover group-hover/img:scale-105 transition-transform duration-500"
                         />
@@ -146,9 +148,7 @@ export default async function CataloguePage(props: {
                         <h3 className="font-semibold text-foreground text-sm md:text-base leading-snug group-hover:text-primary transition-colors">
                           {product.name}
                         </h3>
-                        <p className="text-[11px] md:text-xs text-muted-foreground italic mt-0.5">
-                          {product.scientificName || "N/A"}
-                        </p>
+                       
                       </div>
 
                       <div className="flex items-center gap-1.5 mt-1">
@@ -170,7 +170,7 @@ export default async function CataloguePage(props: {
                           <p className="font-bold text-foreground">₹{product.price?.toLocaleString() || "TBA"}</p>
                           <p className="text-[10px] text-muted-foreground uppercase">{product.form === "CAPSULE_EXTRACT" ? "Extract" : "Powder"}</p>
                         </div>
-                        <Link href={`/product/${product.id}`} className="block">
+                        <Link href={`/product/${String(product.id)}`} className="block">
                           <Button className="w-full h-9 text-xs md:text-sm rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all">
                             <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
                             Add to Cart

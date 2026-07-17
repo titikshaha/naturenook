@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MixedHeroCarousel } from "@/components/banners/MixedHeroCarousel";
 import { TrustStatsCarousel } from "@/components/banners/TrustStatsCarousel";
+import { prisma } from "@/lib/prisma";
 import {
   FlaskConical,
   ShieldCheck,
@@ -16,10 +17,10 @@ import {
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const categories = [
-  { label: "Ayurvedic",     href: "/catalogue?category=ayurvedic",     icon: "🌿", image: "/category1.png" },
-  { label: "Cosmetics",     href: "/catalogue?category=cosmetic",      icon: "🌸", image: "/category3.png" },
-  { label: "Nutraceutical", href: "/catalogue?category=nutraceutical", icon: "💊", image: "/category4.png" },
-  { label: "Homecare",      href: "/catalogue?category=homecare",      icon: "🏠", image: "/category2.png" },
+  { label: "Ayurvedic",     href: "/catalogue?category=Ayurvedic",     icon: "🌿", image: "/category1.png" },
+  { label: "Cosmetics",     href: "/catalogue?category=Cosmetic",      icon: "🌸", image: "/category3.png" },
+  { label: "Nutraceutical", href: "/catalogue?category=Nutraceutical", icon: "💊", image: "/category4.png" },
+  { label: "Homecare",      href: "/catalogue?category=Homecare",      icon: "🏠", image: "/category2.png" },
 ];
 
 const featuredProducts = [
@@ -154,14 +155,27 @@ function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  // We'll update the static IDs to the real DB IDs so the "View Product" links still work
+  // while preserving the exact layout, ratings, and potencies of the static array.
+  const displayProducts = [...featuredProducts];
+  for (const p of displayProducts) {
+    const searchName = p.name.split(" ")[0]; // e.g. "Ashwagandha"
+    const match = await prisma.product.findFirst({
+      where: { name: { contains: searchName } }
+    });
+    if (match) {
+      p.id = match.id;
+    }
+  }
+
   return (
     <div className="flex flex-col">
 
       {/* ── Main Hero Carousel (3 distinct slide types + 3 banners) ── */}
       <MixedHeroCarousel />
-      
-      {/* ── 4th Carousel Component (Stats) left as it is ── */}
       
       {/* ══════════════════════════════════════════════════════════════════════
           PRODUCTS — immediately after banner
@@ -176,7 +190,7 @@ export default function Home() {
                 Our Collection
               </p>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
-                Featured Powders
+                Featured Powders & Extracts
               </h2>
             </div>
             <Link
@@ -189,23 +203,22 @@ export default function Home() {
 
           {/* Product grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
-            {featuredProducts.map((product) => (
+            {displayProducts.map((product) => (
               <div
                 key={product.id}
                 className="group rounded-xl border border-border bg-card overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-200 flex flex-col"
               >
                 {/* Product image */}
-                <div className="relative overflow-hidden group/img">
+                <div className="relative overflow-hidden group/img aspect-square bg-secondary/40 flex items-center justify-center">
                   {product.image ? (
                     <Image 
                       src={product.image} 
                       alt={product.name} 
-                      width={400} 
-                      height={400} 
-                      className="w-full aspect-square object-cover group-hover/img:scale-105 transition-transform duration-500"
+                      fill
+                      className="object-cover group-hover/img:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <ImagePlaceholder className="w-full aspect-square" />
+                    <ImagePlaceholder className="w-full h-full" />
                   )}
                   {/* Category badge — overlaid */}
                   <span className="absolute top-2 left-2 text-[10px] md:text-xs rounded-full bg-background/90 border border-border px-2 py-0.5 font-medium text-foreground/70">
@@ -220,22 +233,24 @@ export default function Home() {
                       {product.name}
                     </h3>
                     <p className="text-[11px] md:text-xs text-muted-foreground italic mt-0.5">
-                      {product.scientific}
+                      {product.scientific || "N/A"}
                     </p>
                   </div>
 
                   <StarRating rating={product.rating} reviews={product.reviews} />
 
                   <div className="mt-auto pt-1">
-                    <span className="inline-block text-xs font-semibold text-primary bg-primary/8 rounded px-2 py-0.5 mb-2.5">
-                      {product.potency}
-                    </span>
+                    {product.potency && (
+                      <span className="inline-block text-[10px] md:text-xs font-semibold text-primary bg-primary/8 rounded px-2 py-0.5 mb-2.5">
+                        {product.potency}
+                      </span>
+                    )}
                     <Link href={`/product/${product.id}`} className="block">
                       <Button
                         className="w-full h-9 text-xs md:text-sm rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all"
                       >
                         <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
-                        Enquire Now
+                        View Product
                       </Button>
                     </Link>
                   </div>
@@ -254,7 +269,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-       <TrustStatsCarousel />
+      
+      <TrustStatsCarousel />
 
       {/* ══════════════════════════════════════════════════════════════════════
           SHOP BY CATEGORY
@@ -318,8 +334,8 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-            <div className="flex-1 min-h-50 md:min-h-0">
-              <ImagePlaceholder className="w-full h-full min-h-50" label="Promo Image" />
+            <div className="flex-1 min-h-50 md:min-h-0 relative">
+               <Image src="/images/products/Moringa1.jpg" alt="Promo" fill className="object-cover" />
             </div>
           </div>
         </div>
@@ -379,10 +395,10 @@ export default function Home() {
                 Browse Catalogue
               </Button>
             </Link>
-            <Link href="/vendor">
+            <Link href="/find-us">
               <Button
                 variant="outline"
-                className="w-full sm:w-auto rounded-full px-8 h-11 font-semibold border-primary-foreground/40 text-primary-background hover:bg-primary-foreground/10 transition-all"
+                className="w-full sm:w-auto rounded-full px-8 h-11 font-semibold border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground transition-all"
               >
                 Wholesale Inquiry
               </Button>
