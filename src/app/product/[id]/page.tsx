@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
-import { ShoppingCart, Star, ShieldCheck, Truck, ArrowLeft, Leaf, CheckCircle2 } from "lucide-react";
+import { ProductGallery } from "@/components/product/ProductGallery";
+import { getProductDataFromCSV } from "@/lib/csvParser";
+import { ShoppingCart, Star, ShieldCheck, Truck, ArrowLeft, CheckCircle2 } from "lucide-react";
 
 export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -16,8 +18,21 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
     notFound();
   }
 
-  // Use a nice placeholder if image is missing
-  const hasImage = Boolean(product.imageUrl);
+  // Fetch dynamic data from CSV for trial (images, discounts)
+  const csvData = getProductDataFromCSV(product.name);
+  
+  // Combine all images
+  const allImages = csvData?.images?.length ? csvData.images : (product.imageUrl ? [product.imageUrl] : []);
+
+  // Calculate pricing
+  const wholesaleMSRP = csvData?.wholesalePrice || product.price;
+  const currentPrice = csvData?.discountedPrice || wholesaleMSRP;
+  const discountAmount = wholesaleMSRP && currentPrice && wholesaleMSRP > currentPrice 
+    ? wholesaleMSRP - currentPrice 
+    : 0;
+  const discountPercent = wholesaleMSRP && discountAmount > 0 
+    ? Math.round((discountAmount / wholesaleMSRP) * 100) 
+    : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -40,33 +55,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
           
           {/* Left Column - Image Gallery */}
           <div className="space-y-4 sticky top-24">
-            <div className="aspect-square w-full rounded-2xl border border-border bg-card overflow-hidden relative flex items-center justify-center">
-              {hasImage ? (
-                <Image
-                  src={product.imageUrl!}
-                  alt={product.name}
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center text-muted-foreground/50">
-                  <Leaf className="w-24 h-24 mb-4" />
-                  <p className="font-medium text-lg">Image Coming Soon</p>
-                </div>
-              )}
-              <span className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm border border-border px-3 py-1 rounded-full text-xs font-bold text-foreground/80 uppercase tracking-wider">
-                {product.category}
-              </span>
-            </div>
-            
-            {/* Thumbnail placeholders for future */}
-            <div className="grid grid-cols-4 gap-3">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className={`aspect-square rounded-xl border flex items-center justify-center bg-card cursor-not-allowed opacity-60 ${i === 1 ? 'border-primary' : 'border-border'}`}>
-                  <Leaf className="w-6 h-6 text-muted-foreground/30" />
-                </div>
-              ))}
-            </div>
+            <ProductGallery images={allImages} productName={product.name} />
           </div>
 
           {/* Right Column - Product Details */}
@@ -102,15 +91,25 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
 
             {/* Price & Action */}
             <div className="mb-8 p-6 rounded-2xl border border-primary/20 bg-primary/5">
-              <div className="mb-4">
+              <div className="mb-5">
                 <p className="text-sm text-muted-foreground font-medium mb-1">Wholesale Price</p>
-                <div className="flex items-end gap-3">
+                <div className="flex items-end gap-3 flex-wrap">
                   <span className="text-4xl font-black text-foreground">
-                    ₹{product.price?.toLocaleString() || "TBA"}
+                    ₹{currentPrice?.toLocaleString() || "TBA"}
                   </span>
-                  <span className="text-sm text-muted-foreground mb-1.5">/ unit</span>
+                  {discountAmount > 0 && (
+                    <>
+                      <span className="text-lg text-muted-foreground line-through mb-1 font-semibold">
+                        ₹{wholesaleMSRP?.toLocaleString()}
+                      </span>
+                      <span className="mb-1.5 px-2 py-0.5 bg-green-500/10 text-green-700 border border-green-500/20 rounded font-bold text-xs">
+                        Save {discountPercent}% (₹{discountAmount})
+                      </span>
+                    </>
+                  )}
+                  <span className="text-sm text-muted-foreground mb-1.5 ml-auto">/ unit</span>
                 </div>
-                <p className="text-xs text-primary font-semibold mt-2 flex items-center gap-1">
+                <p className="text-xs text-primary font-semibold mt-3 flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> In Stock & Ready to Ship
                 </p>
               </div>
@@ -157,9 +156,9 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
             {/* Description */}
             <div>
               <h3 className="text-xl font-bold text-foreground mb-4">About this Product</h3>
-              <div className="prose prose-sm md:prose-base prose-neutral max-w-none text-muted-foreground leading-relaxed">
-                {product.description ? (
-                  <p>{product.description}</p>
+              <div className="prose prose-sm md:prose-base prose-neutral max-w-none text-muted-foreground leading-relaxed whitespace-pre-line">
+                {(csvData?.fullDescription || product.description) ? (
+                  <p>{csvData?.fullDescription || product.description}</p>
                 ) : (
                   <p>A premium quality {product.category.toLowerCase()} product. Sourced responsibly and standardized for consistent potency and efficacy. Detailed documentation and Certificate of Analysis (COA) available upon request.</p>
                 )}

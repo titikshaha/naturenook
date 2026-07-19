@@ -168,6 +168,15 @@ export default async function Home() {
     });
     if (match) {
       p.id = match.id;
+      p.name = match.name;
+      p.image = match.imageUrl || p.image;
+      p.category = match.category;
+      if (match.scientificName) {
+        p.scientific = match.scientificName;
+      }
+      if (match.potency) {
+        p.potency = match.potency;
+      }
     }
   }
 

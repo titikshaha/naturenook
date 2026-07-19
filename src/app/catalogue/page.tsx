@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Filter, Search, Star, ShoppingCart } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { getProductDataFromCSV } from "@/lib/csvParser";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 
@@ -16,18 +17,33 @@ export default async function CataloguePage(props: {
   const form = searchParams.form || "all";
   const query = searchParams.q;
 
-  const where: any = {};
-  if (category !== "all") where.category = category;
-  if (form !== "all") where.form = form;
-  if (query) {
-    where.OR = [
-      { name: { contains: query } },
-      { scientificName: { contains: query } },
-    ];
-  }
+  const isHomecare = category?.toLowerCase() === "homecare";
+  
+  const categoryFilter = category && category !== "all" 
+    ? isHomecare 
+      ? {
+          OR: [
+            { category: { equals: "Homecare" } },
+            { category: { equals: "Ayurvedic" } },
+            { category: { equals: "Cosmetic" } }
+          ]
+        }
+      : { category: { equals: category } }
+    : {};
 
   const products = await prisma.product.findMany({
-    where,
+    where: {
+      AND: [
+        categoryFilter,
+        form && form !== "all" ? { form: { equals: form as any } } : {},
+        query ? {
+          OR: [
+            { name: { contains: query } },
+            { scientificName: { contains: query } }
+          ]
+        } : {}
+      ]
+    },
     orderBy: { name: "asc" },
   });
 
@@ -124,52 +140,72 @@ export default async function CataloguePage(props: {
                 {products.map((product) => (
                   <div
                     key={product.id}
-                    className="group rounded-xl border border-border bg-card overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-200 flex flex-col"
+                    className="group rounded-xl border border-border bg-card overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-200 flex flex-col relative"
                   >
-                    <Link href={`/product/${String(product.id)}`} className="relative overflow-hidden group/img aspect-square bg-secondary/40 flex items-center justify-center block">
-                      {product.imageUrl ? (
-                        <Image 
-                          src={product.imageUrl} 
-                          alt={String(product.name || '')} 
-                          fill
-                          className="object-cover group-hover/img:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <span className="text-xs text-muted-foreground">No Image</span>
-                      )}
-                      
-                      <span className="absolute top-2 left-2 text-[10px] md:text-xs rounded-full bg-background/90 border border-border px-2 py-0.5 font-medium text-foreground/70">
-                        {product.category}
-                      </span>
-                    </Link>
+                    {(() => {
+                      const csvData = getProductDataFromCSV(product.name);
+                      const wholesaleMSRP = csvData?.wholesalePrice || product.price;
+                      const currentPrice = csvData?.discountedPrice || wholesaleMSRP;
+                      const discountAmount = wholesaleMSRP && currentPrice && wholesaleMSRP > currentPrice ? wholesaleMSRP - currentPrice : 0;
+                      const discountPercent = wholesaleMSRP && discountAmount > 0 ? Math.round((discountAmount / wholesaleMSRP) * 100) : 0;
 
-                    <div className="p-4 flex flex-col flex-1 gap-2">
-                      <div>
-                        <h3 className="font-semibold text-foreground text-sm md:text-base leading-snug group-hover:text-primary transition-colors">
-                          {product.name}
-                        </h3>
-                       
-                      </div>
+                      return (
+                        <>
+                          <Link href={`/product/${String(product.id)}`} className="relative overflow-hidden group/img aspect-square bg-secondary/40 flex items-center justify-center block">
+                            {product.imageUrl ? (
+                              <Image 
+                                src={product.imageUrl} 
+                                alt={String(product.name || '')} 
+                                fill
+                                className="object-cover group-hover/img:scale-105 transition-transform duration-500"
+                              />
+                            ) : (
+                              <span className="text-xs text-muted-foreground">No Image</span>
+                            )}
+                            
+                            <span className="absolute top-2 left-2 text-[10px] md:text-xs rounded-full bg-background/90 border border-border px-2 py-0.5 font-medium text-foreground/70">
+                              {product.category}
+                            </span>
+                            {discountPercent > 0 && (
+                              <span className="absolute top-2 right-2 text-[10px] md:text-xs rounded-full bg-green-500 text-white px-2 py-0.5 font-bold shadow-sm">
+                                {discountPercent}% OFF
+                              </span>
+                            )}
+                          </Link>
 
-                      <div className="flex items-center gap-1.5 mt-1">
-                        <div className="flex">
-                          {[1, 2, 3, 4, 5].map((i) => (
-                            <Star key={i} className={`h-3 w-3 ${i <= 4 ? "fill-primary text-primary" : "fill-muted text-muted"}`} />
-                          ))}
-                        </div>
-                        <span className="text-[10px] text-muted-foreground">(42)</span>
-                      </div>
+                          <div className="p-4 flex flex-col flex-1 gap-2">
+                            <div>
+                              <h3 className="font-semibold text-foreground text-sm md:text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                                {product.name}
+                              </h3>
+                            </div>
 
-                      <div className="mt-auto pt-2">
-                        {product.potency && (
-                          <span className="inline-block text-[10px] md:text-xs font-semibold text-primary bg-primary/10 rounded px-2 py-0.5 mb-2.5">
-                            {product.potency}
-                          </span>
-                        )}
-                        <div className="flex items-center justify-between mb-3">
-                          <p className="font-bold text-foreground">₹{product.price?.toLocaleString() || "TBA"}</p>
-                          <p className="text-[10px] text-muted-foreground uppercase">{product.form === "CAPSULE_EXTRACT" ? "Extract" : "Powder"}</p>
-                        </div>
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <div className="flex">
+                                {[1, 2, 3, 4, 5].map((i) => (
+                                  <Star key={i} className={`h-3 w-3 ${i <= 4 ? "fill-primary text-primary" : "fill-muted text-muted"}`} />
+                                ))}
+                              </div>
+                              <span className="text-[10px] text-muted-foreground">(42)</span>
+                            </div>
+
+                            <div className="mt-auto pt-2">
+                              {product.potency && (
+                                <span className="inline-block text-[10px] md:text-xs font-semibold text-primary bg-primary/10 rounded px-2 py-0.5 mb-2.5">
+                                  {product.potency}
+                                </span>
+                              )}
+                              <div className="flex flex-col mb-3">
+                                {discountPercent > 0 ? (
+                                  <div className="flex items-baseline gap-2">
+                                    <p className="font-bold text-foreground text-lg">₹{currentPrice?.toLocaleString() || "TBA"}</p>
+                                    <p className="text-xs text-muted-foreground line-through">₹{wholesaleMSRP?.toLocaleString()}</p>
+                                  </div>
+                                ) : (
+                                  <p className="font-bold text-foreground text-lg">₹{currentPrice?.toLocaleString() || "TBA"}</p>
+                                )}
+                                <p className="text-[10px] text-muted-foreground uppercase mt-0.5">{product.form === "CAPSULE_EXTRACT" ? "Extract" : "Powder"}</p>
+                              </div>
                         <AddToCartButton 
                           product={{
                             id: String(product.id),
@@ -182,8 +218,11 @@ export default async function CataloguePage(props: {
                           <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
                           Add to Cart
                         </AddToCartButton>
-                      </div>
-                    </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })()}
                   </div>
                 ))}
               </div>

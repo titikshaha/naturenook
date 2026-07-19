@@ -37,6 +37,7 @@ export function CartDrawer() {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      {/* @ts-expect-error Radix UI type mismatch for asChild */}
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <ShoppingCart className="h-5 w-5" />
@@ -62,13 +63,11 @@ export function CartDrawer() {
               <ShoppingCart className="h-16 w-16 mb-4 text-muted" />
               <p className="text-lg font-semibold text-foreground">Your cart is empty</p>
               <p className="text-sm text-muted-foreground mt-1">Looks like you haven't added anything yet.</p>
-              <Button 
-                className="mt-6 rounded-full px-8"
-                onClick={() => setIsOpen(false)}
-                asChild
-              >
-                <Link href="/catalogue">Start Shopping</Link>
-              </Button>
+              <Link href="/catalogue" onClick={() => setIsOpen(false)}>
+                <Button className="mt-6 rounded-full px-8 w-full">
+                  Start Shopping
+                </Button>
+              </Link>
             </div>
           ) : (
             cart.items.map((item) => (
@@ -137,13 +136,11 @@ export function CartDrawer() {
               <span className="text-xl font-bold text-foreground">₹{cart.getCartTotal().toLocaleString()}</span>
             </div>
             <p className="text-xs text-muted-foreground mb-6 text-center">Shipping and taxes calculated at checkout.</p>
-            <Button 
-              className="w-full h-12 rounded-xl text-base font-semibold shadow-md bg-primary hover:bg-primary/90 transition-all"
-              onClick={() => setIsOpen(false)}
-              asChild
-            >
-              <Link href="/checkout">Proceed to Checkout</Link>
-            </Button>
+            <Link href="/checkout" onClick={() => setIsOpen(false)}>
+              <Button className="w-full h-12 rounded-xl text-base font-semibold shadow-md bg-primary hover:bg-primary/90 transition-all">
+                Proceed to Checkout
+              </Button>
+            </Link>
           </div>
         )}
       </SheetContent>
