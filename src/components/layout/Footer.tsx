@@ -81,7 +81,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary shrink-0" />
-                <a href="mailto:hello@naturenook.in" className="hover:text-primary transition-colors">hello@naturenook.in</a>
+                <a href="mailto:sales@naturenook.co.in" className="hover:text-primary transition-colors">sales@naturenook.co.in</a>
               </li>
             </ul>
           </div>
@@ -90,8 +90,8 @@ export function Footer() {
         <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} Nature Nook. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
+            <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="hover:text-primary transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

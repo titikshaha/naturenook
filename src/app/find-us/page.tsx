@@ -4,19 +4,25 @@ import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { submitEnquiry } from "@/app/actions/enquiry";
 
 export default function FindUsPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call for enquiry submission
-    setTimeout(() => {
-      setLoading(false);
+    
+    const formData = new FormData(e.currentTarget);
+    const result = await submitEnquiry(formData);
+    
+    setLoading(false);
+    if (result.success) {
       setSuccess(true);
-    }, 1500);
+    } else {
+      alert(result.error || "Something went wrong.");
+    }
   };
 
   return (
@@ -71,8 +77,8 @@ export default function FindUsPage() {
                     </div>
                     <div>
                       <p className="font-semibold text-foreground">Email</p>
-                      <p className="text-muted-foreground text-sm mt-1">sales@naturenook.in</p>
-                      <p className="text-muted-foreground text-sm">support@naturenook.in</p>
+                      <p className="text-muted-foreground text-sm mt-1">sales@naturenook.co.in</p>
+                      
                     </div>
                   </div>
                 </div>
@@ -111,29 +117,29 @@ export default function FindUsPage() {
                   <div className="grid md:grid-cols-2 gap-5">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Full Name *</label>
-                      <input required type="text" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="John Doe" />
+                      <input name="name" required type="text" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="John Doe" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Company Name</label>
-                      <input type="text" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="Optional" />
+                      <input name="companyName" type="text" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="Optional" />
                     </div>
                   </div>
                   
                   <div className="grid md:grid-cols-2 gap-5">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Email Address *</label>
-                      <input required type="email" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="john@example.com" />
+                      <input name="email" required type="email" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="john@example.com" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Phone Number</label>
-                      <input type="tel" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="+91 ..." />
+                      <input name="phone" type="tel" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="+91 ..." />
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground">Enquiry Type *</label>
-                    <select required className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
-                      <option value="" disabled selected>Select an option...</option>
+                    <select name="type" required defaultValue="" className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                      <option value="" disabled>Select an option...</option>
                       <option value="wholesale">Bulk / Wholesale Pricing</option>
                       <option value="product">Product Details & Specs (COA)</option>
                       <option value="order">Order Tracking / Support</option>
@@ -143,7 +149,7 @@ export default function FindUsPage() {
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground">Message *</label>
-                    <textarea required rows={5} className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder="How can we help you?"></textarea>
+                    <textarea name="message" required rows={5} className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder="How can we help you?"></textarea>
                   </div>
 
                   <Button disabled={loading} type="submit" className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg text-base">
