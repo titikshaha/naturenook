@@ -30,7 +30,8 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
           src={selectedImage}
           alt={productName}
           fill
-          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-contain"
           priority
         />
       </div>
@@ -52,7 +53,8 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 src={img}
                 alt={`${productName} thumbnail ${idx + 1}`}
                 fill
-                className="object-cover"
+                sizes="(max-width: 768px) 25vw, 15vw"
+                className="object-contain"
               />
             </button>
           ))}

@@ -7,20 +7,20 @@ const adapter = new PrismaBetterSqlite3({ url: "file:./dev.db" });
 const prisma = new PrismaClient({ adapter });
 
 const keywordMap: Record<string, string> = {
-  "ashwagandha": "/images/products/Ashwagandha3.jpg",
-  "beetroot": "/images/products/Beetroot13.jpg",
-  "bhringraj": "/images/products/Bhringraj22.jpg",
-  "brahmi": "/images/products/Brahmi15.jpg",
-  "gudmar": "/images/products/Gudmar19.jpg",
-  "gymnema": "/images/products/Gudmar19.jpg",
-  "kaunch": "/images/products/Kaunch25.jpg",
-  "moringa": "/images/products/Moringa1.jpg",
-  "musli": "/images/products/Musli10.jpg",
-  "sea buckthorn": "/images/products/SeaBuck5.jpg",
-  "shankhpushpi": "/images/products/Shankh17.jpg",
-  "shatavari": "/images/products/Shatavari7.jpg",
-  "spirulina": "/images/products/Spirulina11.jpg",
-  "triphala": "/images/products/Triphala23.jpg",
+  "ashwagandha": "https://res.cloudinary.com/qnvdmapj/image/upload/Ashwagandha3.jpg",
+  "beetroot": "https://res.cloudinary.com/qnvdmapj/image/upload/Beetroot13.jpg",
+  "bhringraj": "https://res.cloudinary.com/qnvdmapj/image/upload/Bhringraj22.jpg",
+  "brahmi": "https://res.cloudinary.com/qnvdmapj/image/upload/Brahmi15.jpg",
+  "gudmar": "https://res.cloudinary.com/qnvdmapj/image/upload/Gudmar19.jpg",
+  "gymnema": "https://res.cloudinary.com/qnvdmapj/image/upload/Gudmar19.jpg",
+  "kaunch": "https://res.cloudinary.com/qnvdmapj/image/upload/Kaunch25.jpg",
+  "moringa": "https://res.cloudinary.com/qnvdmapj/image/upload/Moringa1.jpg",
+  "musli": "https://res.cloudinary.com/qnvdmapj/image/upload/Musli10.jpg",
+  "sea buckthorn": "https://res.cloudinary.com/qnvdmapj/image/upload/SeaBuck5.jpg",
+  "shankhpushpi": "https://res.cloudinary.com/qnvdmapj/image/upload/Shankh17.jpg",
+  "shatavari": "https://res.cloudinary.com/qnvdmapj/image/upload/Shatavari7.jpg",
+  "spirulina": "https://res.cloudinary.com/qnvdmapj/image/upload/Spirulina11.jpg",
+  "triphala": "https://res.cloudinary.com/qnvdmapj/image/upload/Triphala23.jpg",
 };
 
 async function main() {

@@ -66,9 +66,11 @@ export function getProductDataFromCSV(productName: string) {
       const discountedPrice = discountStr ? parseFloat(discountStr) : null;
       
       const images = [];
+      const cloudinaryBaseUrl = "https://res.cloudinary.com/qnvdmapj/image/upload/";
+      
       for (let i = 6; i <= 9; i++) {
         if (row[i] && row[i].trim() !== "") {
-          images.push(`/images/products/${row[i].trim()}`);
+          images.push(`${cloudinaryBaseUrl}${row[i].trim()}`);
         }
       }
 

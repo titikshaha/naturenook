@@ -6,6 +6,7 @@ import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { getProductDataFromCSV } from "@/lib/csvParser";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
+import Fuse from "fuse.js";
 
 export const dynamic = "force-dynamic";
 
@@ -31,21 +32,25 @@ export default async function CataloguePage(props: {
       : { category: { equals: category } }
     : {};
 
-  const products = await prisma.product.findMany({
+  let products = await prisma.product.findMany({
     where: {
       AND: [
         categoryFilter,
-        form && form !== "all" ? { form: { equals: form as any } } : {},
-        query ? {
-          OR: [
-            { name: { contains: query } },
-            { scientificName: { contains: query } }
-          ]
-        } : {}
+        form && form !== "all" ? { form: { equals: form as any } } : {}
       ]
     },
     orderBy: { name: "asc" },
   });
+
+  if (query) {
+    const fuse = new Fuse(products, {
+      keys: ["name", "scientificName", "category", "description"],
+      threshold: 0.3,
+      distance: 100,
+      ignoreLocation: true,
+    });
+    products = fuse.search(query).map(result => result.item);
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -97,7 +102,7 @@ export default async function CataloguePage(props: {
                 <div className="space-y-2.5">
                   {[
                     { val: "all", label: "All Forms" }, 
-                    { val: "CAPSULE_EXTRACT", label: "Capsules (Extracts)" }, 
+                    { val: "CAPSULE_EXTRACT", label: "Capsules" }, 
                     { val: "POWDER", label: "Powders" }
                   ].map((f) => {
                     const isActive = form === f.val;
@@ -157,7 +162,8 @@ export default async function CataloguePage(props: {
                                 src={product.imageUrl} 
                                 alt={String(product.name || '')} 
                                 fill
-                                className="object-cover group-hover/img:scale-105 transition-transform duration-500"
+                                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                                className="object-contain group-hover/img:scale-105 transition-transform duration-500"
                               />
                             ) : (
                               <span className="text-xs text-muted-foreground">No Image</span>

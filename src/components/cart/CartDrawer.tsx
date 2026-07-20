@@ -79,7 +79,8 @@ export function CartDrawer() {
                       src={item.imageUrl}
                       alt={item.name}
                       fill
-                      className="object-cover"
+                      sizes="80px"
+                      className="object-contain"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-secondary/50">

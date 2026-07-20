@@ -3,16 +3,16 @@ import { Leaf, Mail, MapPin, Phone } from "lucide-react";
 
 const shopLinks = [
   { label: "All powders", href: "/catalogue" },
-  { label: "Ayurvedic", href: "/catalogue?category=ayurvedic" },
-  { label: "Cosmetic Grade", href: "/catalogue?category=cosmetic" },
-  { label: "Nutraceutical", href: "/catalogue?category=nutraceutical" },
+  { label: "Ayurvedic", href: "/catalogue?category=Ayurvedic" },
+  { label: "Cosmetic Grade", href: "/catalogue?category=Cosmetic" },
+  { label: "Nutraceutical", href: "/catalogue?category=Nutraceutical" },
   { label: "Bulk / Wholesale", href: "/vendor" },
 ];
 
 const supportLinks = [
   { label: "Track Order", href: "/track" },
   { label: "My Account", href: "/account" },
-  { label: "Contact Us", href: "#" },
+  { label: "Contact Us", href: "/find-us" },
   { label: "FAQs", href: "#" },
 ];
 
@@ -28,7 +28,7 @@ export function Footer() {
               <span className="font-bold text-lg text-primary tracking-tight">Nature Nook</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Manufacturing and distributing 150+ premium herbal powders for
+              Manufacturing and distributing premium herbal powders for
               Ayurvedic medicines, herbal cosmetics, and nutraceuticals.
             </p>
           </div>
@@ -38,7 +38,7 @@ export function Footer() {
             <h4 className="font-semibold text-sm mb-4 text-foreground">Shop</h4>
             <ul className="space-y-2.5">
               {shopLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -55,7 +55,7 @@ export function Footer() {
             <h4 className="font-semibold text-sm mb-4 text-foreground">Support</h4>
             <ul className="space-y-2.5">
               {supportLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-muted-foreground hover:text-primary transition-colors"

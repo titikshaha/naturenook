@@ -32,7 +32,7 @@ const featuredProducts = [
     category: "Ayurvedic",
     rating: 4.8,
     reviews: 124,
-    image: "/images/products/Ashwagandha3.jpg",
+    image: "https://res.cloudinary.com/qnvdmapj/image/upload/Ashwagandha3.jpg",
   },
   {
     id: "2",
@@ -42,7 +42,7 @@ const featuredProducts = [
     category: "Ayurvedic",
     rating: 4.7,
     reviews: 89,
-    image: "/images/products/Shatavari7.jpg",
+    image: "https://res.cloudinary.com/qnvdmapj/image/upload/Shatavari7.jpg",
   },
   {
     id: "3",
@@ -52,7 +52,7 @@ const featuredProducts = [
     category: "Nutraceutical",
     rating: 4.9,
     reviews: 67,
-    image: "/images/products/Gudmar19.jpg",
+    image: "https://res.cloudinary.com/qnvdmapj/image/upload/Gudmar19.jpg",
   },
   {
     id: "4",
@@ -62,7 +62,7 @@ const featuredProducts = [
     category: "Nutraceutical",
     rating: 4.6,
     reviews: 102,
-    image: "/images/products/Spirulina11.jpg",
+    image: "https://res.cloudinary.com/qnvdmapj/image/upload/Spirulina11.jpg",
   },
   {
     id: "5",
@@ -72,7 +72,7 @@ const featuredProducts = [
     category: "Ayurvedic",
     rating: 4.8,
     reviews: 78,
-    image: "/images/products/Brahmi15.jpg",
+    image: "https://res.cloudinary.com/qnvdmapj/image/upload/Brahmi15.jpg",
   },
   {
     id: "6",
@@ -82,7 +82,7 @@ const featuredProducts = [
     category: "Nutraceutical",
     rating: 4.7,
     reviews: 95,
-    image: "/images/products/Moringa1.jpg",
+    image: "https://res.cloudinary.com/qnvdmapj/image/upload/Moringa1.jpg",
   },
   {
     id: "7",
@@ -92,7 +92,7 @@ const featuredProducts = [
     category: "Cosmetic",
     rating: 4.5,
     reviews: 143,
-    image: "/images/products/Bhringraj21.jpg",
+    image: "https://res.cloudinary.com/qnvdmapj/image/upload/Bhringraj21.jpg",
   },
   {
     id: "8",
@@ -102,7 +102,7 @@ const featuredProducts = [
     category: "Ayurvedic",
     rating: 4.6,
     reviews: 58,
-    image: "/images/products/Triphala23.jpg",
+    image: "https://res.cloudinary.com/qnvdmapj/image/upload/Triphala23.jpg",
   },
 ];
 
@@ -114,7 +114,7 @@ const whyChoose = [
   },
   {
     icon: FlaskConical,
-    title: "150+ Powders",
+    title: "60+ Powders",
     desc: "Extensive range for Ayurvedic, cosmetic, nutraceutical, and homecare industries.",
   },
   {
@@ -224,7 +224,8 @@ export default async function Home() {
                       src={product.image} 
                       alt={product.name} 
                       fill
-                      className="object-cover group-hover/img:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                      className="object-contain group-hover/img:scale-105 transition-transform duration-500"
                     />
                   ) : (
                     <ImagePlaceholder className="w-full h-full" />
@@ -297,8 +298,8 @@ export default async function Home() {
 
           <div className="flex items-start justify-center gap-5 md:gap-12 overflow-x-auto pb-2 [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden">
             {[
-              { label: "All", href: "/catalogue", count: "150+", image: "/logo2.png" },
-              ...categories.map((c) => ({ label: c.label, href: c.href, count: "30+", image: c.image })),
+              { label: "All", href: "/catalogue", count: "60+", image: "/logo2.png" },
+              ...categories.map((c) => ({ label: c.label, href: c.href, count: "20+", image: c.image })),
             ].map((cat) => (
               <Link
                 key={cat.label}
@@ -344,7 +345,7 @@ export default async function Home() {
               </Link>
             </div>
             <div className="flex-1 min-h-50 md:min-h-0 relative">
-               <Image src="/images/products/Moringa1.jpg" alt="Promo" fill className="object-cover" />
+               <Image src="https://res.cloudinary.com/qnvdmapj/image/upload/Moringa1.jpg" alt="Promo" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
             </div>
           </div>
         </div>

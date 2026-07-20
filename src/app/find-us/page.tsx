@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function FindUsPage() {
   const [loading, setLoading] = useState(false);
@@ -83,9 +84,11 @@ export default function FindUsPage() {
               <p className="text-primary-foreground/80 text-sm leading-relaxed mb-5">
                 Looking to order powders in bulk (10kg+)? We offer specialized pricing, COA documentation, and fast-track shipping for manufacturers.
               </p>
-              <Button className="w-full bg-background text-primary hover:bg-background/90 font-semibold rounded-full">
-                Apply for Vendor Account
-              </Button>
+              <Link href="/vendor" className="block w-full">
+                <Button className="w-full bg-background text-primary hover:bg-background/90 font-semibold rounded-full">
+                  Apply for Vendor Account
+                </Button>
+              </Link>
             </div>
           </div>
 

@@ -128,7 +128,7 @@ export default function CheckoutPage() {
                   <div key={item.id} className="flex gap-4 items-center">
                     <div className="h-16 w-16 bg-card border border-border rounded-lg relative overflow-hidden shrink-0">
                       {item.imageUrl ? (
-                        <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
+                        <Image src={item.imageUrl} alt={item.name} fill sizes="64px" className="object-contain" />
                       ) : (
                         <ShoppingCart className="w-6 h-6 m-auto mt-5 text-muted-foreground/50" />
                       )}

@@ -70,12 +70,7 @@ async function main() {
 
   let imported = 0;
   
-  const rawFilesDir = path.join(process.cwd(), "raw files");
-  const publicImagesDir = path.join(process.cwd(), "public/images/products");
-
-  if (!fs.existsSync(publicImagesDir)) {
-    fs.mkdirSync(publicImagesDir, { recursive: true });
-  }
+  const cloudinaryBaseUrl = "https://res.cloudinary.com/qnvdmapj/image/upload/";
 
   for (const row of rows) {
     if (!row || row.length < 2) continue;
@@ -98,7 +93,7 @@ async function main() {
 
     const category = row[1]?.trim() || "Ayurvedic";
     const formStr = row[2]?.trim().toUpperCase();
-    const form = formStr === "EXTRACT" || formStr === "CAPSULE_EXTRACT" ? "CAPSULE_EXTRACT" : "POWDER";
+    const form = formStr === "EXTRACT" || formStr === "CAPSULE_EXTRACT" || formStr === "CAPSULE" ? "CAPSULE_EXTRACT" : "POWDER";
     const potency = row[3]?.trim();
     
     const rawWholesale = row[4]?.replace(/[^0-9.]/g, '');
@@ -117,22 +112,15 @@ async function main() {
     let imageUrl = null;
     const image1 = row[6]?.trim();
     if (image1) {
-      const sourcePath = path.join(rawFilesDir, image1);
-      const destPath = path.join(publicImagesDir, image1);
-      
-      if (fs.existsSync(sourcePath)) {
-        fs.copyFileSync(sourcePath, destPath);
-        imageUrl = `/images/products/${image1}`;
-      } else {
-        // Fallback: try to find an image in raw files that includes the first word of the product
-        const firstWord = name.split(" ")[0].toLowerCase();
-        const files = fs.readdirSync(rawFilesDir);
-        const match = files.find(f => f.toLowerCase().includes(firstWord) && (f.endsWith('.jpg') || f.endsWith('.png')));
-        if (match) {
-          fs.copyFileSync(path.join(rawFilesDir, match), path.join(publicImagesDir, match));
-          imageUrl = `/images/products/${match}`;
-        }
-      }
+      imageUrl = cloudinaryBaseUrl + image1;
+    } else {
+      // If no image is provided, construct it manually based on convention or leave as null.
+      const firstWord = name.split(" ")[0].toLowerCase();
+      // As a fallback, we assume there's an image named like the first word in the cloud.
+      // E.g., ashwagandha -> nature-nook-ashwagandha-powder-front.jpg
+      // Since we don't know the exact name without checking, we'll leave it null 
+      // or just assume standard convention for trial.
+      // Leaving null is safer if it's missing in CSV.
     }
 
     await prisma.product.create({
