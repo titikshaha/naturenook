@@ -44,17 +44,29 @@ model Address {
 
 model Order {
   id                String    @id @default(cuid())
-  userId            String
-  user              User      @relation(fields: [userId], references: [id])
+  userId            String?
+  user              User?     @relation(fields: [userId], references: [id])
   
   status            String    @default("PENDING") // PENDING, PAID, SHIPPED, DELIVERED, CANCELLED
   totalAmount       Float
   
-  billingAddressId  String
-  billingAddress    Address   @relation("BillingAddress", fields: [billingAddressId], references: [id])
+  // Optional relations for registered users
+  billingAddressId  String?
+  billingAddress    Address?  @relation("BillingAddress", fields: [billingAddressId], references: [id])
   
-  shippingAddressId String
-  shippingAddress   Address   @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  shippingAddressId String?
+  shippingAddress   Address?  @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+
+  // Guest checkout fields
+  guestName         String?
+  guestEmail        String?
+  guestPhone        String?
+  guestAddress      String?
+  
+  // Razorpay fields
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  razorpaySignature String?
   
   transactionId     String?
   trackingId        String?
