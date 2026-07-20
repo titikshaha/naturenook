@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 import Razorpay from "razorpay";
+import { auth } from "@/auth";
 
 export async function createRazorpayOrder(
   totalAmount: number,
@@ -10,6 +11,9 @@ export async function createRazorpayOrder(
   cartItems: { id: string; name: string; price: number; quantity: number }[]
 ) {
   try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
     const key_id = process.env.RAZORPAY_KEY_ID;
     const key_secret = process.env.RAZORPAY_KEY_SECRET;
 
@@ -31,6 +35,7 @@ export async function createRazorpayOrder(
     // 2. Create PENDING Order in our SQLite Database
     const dbOrder = await prisma.order.create({
       data: {
+        userId: userId || null,
         totalAmount,
         status: "PENDING",
         guestName: guestDetails.name,

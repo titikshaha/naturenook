@@ -248,74 +248,87 @@ export default function AccountDashboard({ user }: { user: any }) {
           </div>
         )}
 
-        {/* ── ORDERS ── */}
+        {/* ── MY ORDERS ── */}
         {activeTab === "orders" && (
-          <div className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="px-5 py-4 border-b border-border">
-              <h2 className="font-semibold text-foreground">Order History</h2>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold text-foreground">Order History</h2>
             </div>
-            {/* Desktop table */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border bg-muted/30">
-                    <th className="text-left font-semibold text-muted-foreground px-5 py-3">Order ID</th>
-                    <th className="text-left font-semibold text-muted-foreground px-5 py-3">Items</th>
-                    <th className="text-left font-semibold text-muted-foreground px-5 py-3">Date</th>
-                    <th className="text-left font-semibold text-muted-foreground px-5 py-3">Status</th>
-                    <th className="px-5 py-3"></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {user.orders.map((order: any) => (
-                    <tr key={order.id} className="hover:bg-muted/20 transition-colors">
-                      <td className="px-5 py-4 font-semibold text-foreground">#{order.id.slice(-6).toUpperCase()}</td>
-                      <td className="px-5 py-4 text-muted-foreground">{order.items?.length || 0} items</td>
-                      <td className="px-5 py-4 text-muted-foreground">{new Date(order.createdAt).toLocaleDateString()}</td>
-                      <td className="px-5 py-4">
-                        <span className={`text-xs font-semibold rounded-full px-2.5 py-1 ${statusColor[order.status] || "bg-muted text-muted-foreground"}`}>
-                          {order.status}
-                        </span>
-                      </td>
-                      <td className="px-5 py-4">
-                        <Link href="/track" className="text-xs text-primary font-semibold hover:underline underline-offset-4">
-                          Track
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                  {user.orders.length === 0 && (
-                    <tr>
-                      <td colSpan={5} className="px-5 py-6 text-center text-muted-foreground">
-                        No orders found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-            {/* Mobile cards */}
-            <div className="md:hidden divide-y divide-border">
-              {user.orders.map((order: any) => (
-                <div key={order.id} className="px-5 py-4 space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-foreground text-sm">#{order.id.slice(-6).toUpperCase()}</span>
-                    <span className={`text-xs font-semibold rounded-full px-2.5 py-1 ${statusColor[order.status] || "bg-muted text-muted-foreground"}`}>
-                      {order.status}
-                    </span>
+            
+            <div className="space-y-5">
+              {user.orders
+                .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .map((order: any) => (
+                <div key={order.id} className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                  {/* Order Header */}
+                  <div className="bg-secondary/30 px-6 py-4 border-b border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex flex-col sm:flex-row sm:gap-8 gap-2 text-sm">
+                      <div>
+                        <p className="text-muted-foreground mb-0.5">Order Placed</p>
+                        <p className="font-semibold">{new Date(order.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground mb-0.5">Total Amount</p>
+                        <p className="font-semibold text-primary">₹{order.totalAmount?.toLocaleString() || "0"}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground mb-0.5">Order #</p>
+                        <p className="font-semibold text-foreground uppercase">{order.id.slice(0, 8)}</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start md:items-end gap-1.5">
+                      <span className={`text-xs font-bold rounded-full px-3 py-1 uppercase tracking-wider ${statusColor[order.status] || "bg-muted text-muted-foreground"}`}>
+                        {order.status}
+                      </span>
+                      {order.transactionId && (
+                        <p className="text-[10px] text-muted-foreground font-mono">TXN: {order.transactionId}</p>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">{order.items?.length || 0} items</p>
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-muted-foreground">{new Date(order.createdAt).toLocaleDateString()}</p>
-                    <Link href="/track" className="text-xs text-primary font-semibold hover:underline underline-offset-4">
-                      Track order &rarr;
+
+                  {/* Order Body (Items) */}
+                  <div className="px-6 py-5">
+                    <h4 className="text-sm font-semibold mb-4 text-foreground">Items in your order:</h4>
+                    <div className="space-y-3">
+                      {order.items?.map((item: any) => (
+                        <div key={item.id} className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-secondary/50 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <Package className="w-5 h-5 text-muted-foreground/70" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-foreground line-clamp-1">{item.productName}</p>
+                              <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                            </div>
+                          </div>
+                          <p className="text-sm font-bold">₹{(item.priceAtTime * item.quantity).toLocaleString()}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Order Footer */}
+                  <div className="px-6 py-4 bg-muted/20 border-t border-border flex items-center justify-between">
+                    <p className="text-xs text-muted-foreground">
+                      Shipped to: <span className="font-semibold text-foreground">{order.guestName || name}</span>
+                    </p>
+                    <Link href="/track" className="text-sm text-primary font-bold hover:underline underline-offset-4">
+                      Track Order &rarr;
                     </Link>
                   </div>
                 </div>
               ))}
+              
               {user.orders.length === 0 && (
-                <div className="px-5 py-6 text-center text-sm text-muted-foreground">
-                  No orders found.
+                <div className="bg-card rounded-2xl border border-border p-12 text-center">
+                  <div className="w-16 h-16 bg-secondary/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Package className="w-8 h-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-2">No orders yet</h3>
+                  <p className="text-muted-foreground mb-6">When you place an order, it will appear here.</p>
+                  <Link href="/catalogue">
+                    <Button className="rounded-full px-6">Start Shopping</Button>
+                  </Link>
                 </div>
               )}
             </div>

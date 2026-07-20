@@ -119,7 +119,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
                   product={{
                     id: String(product.id),
                     name: String(product.name),
-                    price: product.price,
+                    price: currentPrice || product.price || 0,
                     imageUrl: product.imageUrl,
                   }}
                   className="flex-1 h-12 text-base font-bold rounded-xl shadow-lg hover:shadow-primary/25 transition-all"

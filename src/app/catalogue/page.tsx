@@ -216,7 +216,7 @@ export default async function CataloguePage(props: {
                           product={{
                             id: String(product.id),
                             name: String(product.name),
-                            price: product.price,
+                            price: currentPrice || product.price || 0,
                             imageUrl: product.imageUrl,
                           }}
                           className="w-full h-9 text-xs md:text-sm rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all"
