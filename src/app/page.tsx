@@ -161,7 +161,7 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
   // We'll update the static IDs to the real DB IDs so the "View Product" links still work
   // while preserving the exact layout, ratings, and potencies of the static array.
-  const displayProducts = [...featuredProducts];
+  const displayProducts = featuredProducts.map((p) => ({ ...p }));
   for (const p of displayProducts) {
     const searchName = p.name.split(" ")[0]; // e.g. "Ashwagandha"
     const match = await prisma.product.findFirst({
@@ -217,7 +217,7 @@ export default async function Home() {
 
           {/* Product grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
-            {displayProducts.map((product) => (
+            {displayProducts.map((product, index) => (
               <div
                 key={product.id}
                 className="group rounded-xl border border-border bg-card overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-200 flex flex-col"
@@ -229,6 +229,7 @@ export default async function Home() {
                       src={product.image} 
                       alt={product.name} 
                       fill
+                      priority={index <= 3}
                       sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                       className="object-contain group-hover/img:scale-105 transition-transform duration-500"
                     />
