@@ -44,12 +44,25 @@ export default async function CataloguePage(props: {
 
   if (query) {
     const fuse = new Fuse(products, {
-      keys: ["name", "scientificName", "category", "description"],
-      threshold: 0.3,
-      distance: 100,
+      keys: [
+        { name: "name", weight: 2 },
+        { name: "scientificName", weight: 1.5 },
+        { name: "category", weight: 1 },
+        { name: "description", weight: 1 }
+      ],
+      threshold: 0.5, // Increased from 0.3 for better fuzzy matching (typos, spacing)
+      distance: 500,  // Increased from 100 to search deeper into long descriptions
       ignoreLocation: true,
+      useExtendedSearch: true,
     });
-    products = fuse.search(query).map(result => result.item);
+    // Create an extended search query that matches ANY of the words
+    const searchTerms = query.split(' ').filter(Boolean).map(term => `'${term}`).join(' | ');
+    products = fuse.search(searchTerms).map(result => result.item);
+    
+    // If extended search is too restrictive, fallback to normal fuzzy search
+    if (products.length === 0) {
+      products = fuse.search(query).map(result => result.item);
+    }
   }
 
   return (

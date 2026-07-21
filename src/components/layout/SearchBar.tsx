@@ -2,43 +2,39 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
-import Fuse from "fuse.js";
-import Link from "next/link";
-
-// Temporary mock catalogue data for search
-const mockCatalogue = [
-  { id: "1", name: "Ashwagandha powder", category: "Ayurvedic", scientific: "Withania somnifera" },
-  { id: "2", name: "Shatavari powder", category: "Ayurvedic", scientific: "Asparagus racemosus" },
-  { id: "3", name: "Gymnema powder (Gudmar)", category: "Nutraceutical", scientific: "Gymnema sylvestre" },
-  { id: "4", name: "Spirulina powder", category: "Nutraceutical", scientific: "Arthrospira platensis" },
-  { id: "5", name: "Brahmi powder", category: "Ayurvedic", scientific: "Bacopa monnieri" },
-  { id: "6", name: "Moringa powder", category: "Nutraceutical", scientific: "Moringa oleifera" },
-  { id: "7", name: "Bhringraj powder", category: "Cosmetic", scientific: "Eclipta prostrata" },
-  { id: "8", name: "Triphala powder", category: "Ayurvedic", scientific: "Three-fruit blend" },
-  { id: "9", name: "Neem powder", category: "Cosmetic", scientific: "Azadirachta indica" },
-  { id: "10", name: "Aloe Vera powder", category: "Cosmetic", scientific: "Aloe barbadensis" },
-];
+import { useRouter } from "next/navigation";
+import { useDebounce } from "use-debounce";
 
 export function SearchBar() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
+  const [debouncedQuery] = useDebounce(query, 300);
   const [isOpen, setIsOpen] = useState(false);
   const [results, setResults] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Setup Fuse.js
-  const fuse = new Fuse(mockCatalogue, {
-    keys: ["name", "scientific", "category"],
-    threshold: 0.3, // Lower is more exact, higher is more fuzzy
-  });
-
   useEffect(() => {
-    if (query.trim() === "") {
+    if (debouncedQuery.trim() === "") {
       setResults([]);
-    } else {
-      const searchResults = fuse.search(query).map((res) => res.item);
-      setResults(searchResults);
+      return;
     }
-  }, [query]);
+
+    const fetchResults = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(debouncedQuery)}`);
+        const data = await res.json();
+        setResults(data.results || []);
+      } catch (error) {
+        console.error("Search error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchResults();
+  }, [debouncedQuery]);
 
   // Click outside to close
   useEffect(() => {
@@ -61,6 +57,12 @@ export function SearchBar() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && query.trim()) {
+                setIsOpen(false);
+                router.push(`/catalogue?q=${encodeURIComponent(query)}`);
+              }
+            }}
             placeholder="Search powders..."
             className="w-full bg-transparent text-sm focus:outline-none text-foreground"
           />
@@ -73,15 +75,18 @@ export function SearchBar() {
             <div className="absolute top-full right-0 mt-2 w-[280px] md:w-full bg-card border border-border rounded-xl shadow-lg overflow-hidden py-2 max-h-[300px] overflow-y-auto">
               {results.length > 0 ? (
                 results.map((item) => (
-                  <Link
+                  <button
                     key={item.id}
-                    href={`/product/${item.id}`}
-                    onClick={() => { setIsOpen(false); setQuery(""); }}
-                    className="block px-4 py-2 hover:bg-secondary/40 transition-colors"
+                    onClick={() => { 
+                      setIsOpen(false); 
+                      setQuery(""); 
+                      router.push(`/product/${item.id}`); 
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-secondary/40 transition-colors"
                   >
                     <p className="text-sm font-semibold text-foreground">{item.name}</p>
-                    <p className="text-xs text-muted-foreground">{item.scientific} • {item.category}</p>
-                  </Link>
+                    <p className="text-xs text-muted-foreground">{item.scientificName || "Product"} • {item.category}</p>
+                  </button>
                 ))
               ) : (
                 <div className="px-4 py-3 text-sm text-muted-foreground text-center">
