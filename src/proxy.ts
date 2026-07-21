@@ -9,7 +9,7 @@ const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
 const RATE_LIMIT = 10; // max requests
 const WINDOW_MS = 60 * 1000; // 1 minute
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Only apply rate limiting to auth routes to prevent brute force
   if (request.nextUrl.pathname.startsWith("/api/auth/register") || 
       request.nextUrl.pathname.startsWith("/api/auth/callback/credentials")) {

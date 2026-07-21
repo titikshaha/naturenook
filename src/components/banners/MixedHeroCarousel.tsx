@@ -109,7 +109,7 @@ export function MixedHeroCarousel() {
                 <LeafyGreen className="h-3.5 w-3.5" /> 100% Botanical · Standardized Quality
               </span>
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight leading-tight">
-                Pure Herbal <span className="text-primary">Excellence</span> From Nature
+                Organic Herbal <span className="text-primary">Excellence</span> From Nature
               </h1>
               <p className="text-muted-foreground text-base lg:text-lg leading-relaxed max-w-lg">
                 Nature Nook manufactures and distributes 150+ premium herbal powders for Ayurvedic medicines, cosmetics, and nutraceuticals — straight from Indore.
@@ -131,9 +131,9 @@ export function MixedHeroCarousel() {
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-xs font-semibold text-primary">
               <LeafyGreen className="h-3.5 w-3.5" /> 100% Botanical
             </span>
-            <h1 className="text-3xl font-bold tracking-tight leading-tight">Pure Herbal <span className="text-primary">Excellence</span> From Nature</h1>
+            <h1 className="text-3xl font-bold tracking-tight leading-tight">Organic Herbal <span className="text-primary">Excellence</span> From Nature</h1>
             <img src="/hero.png" alt="Herbal powders hero" className="w-full max-w-[260px] h-auto object-contain drop-shadow-md" />
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">Nature Nook manufactures 150+ premium herbal powders for medicines, cosmetics, and nutraceuticals.</p>
+            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">Nature Nook manufactures 60+ premium herbal powders for medicines, cosmetics, and nutraceuticals.</p>
             <div className="flex flex-col gap-2.5 w-full max-w-xs">
               <Link href="/catalogue"><Button className="w-full rounded-full bg-primary text-primary-foreground font-semibold shadow-md">Browse Catalogue <ArrowRight className="ml-1.5 h-4 w-4" /></Button></Link>
               <Link href="/vendor"><Button variant="outline" className="w-full rounded-full border-primary/30">Wholesale Inquiry</Button></Link>

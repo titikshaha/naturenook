@@ -15,7 +15,7 @@ import { ArrowRight, LeafyGreen } from "lucide-react";
 const slides = [
   {
     pill: "100% Botanical · Standardized Quality",
-    headlineTop: "Pure Herbal",
+    headlineTop: "Organic Herbal",
     headlineAccent: "Excellence",
     headlineBottom: "From Nature",
     body: "Nature Nook manufactures and distributes 150+ premium herbal powders for Ayurvedic medicines, cosmetics, and nutraceuticals — straight from Indore.",
