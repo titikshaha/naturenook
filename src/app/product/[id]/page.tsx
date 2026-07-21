@@ -34,6 +34,10 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
     ? Math.round((discountAmount / wholesaleMSRP) * 100) 
     : 0;
 
+  const hash = String(product.id).split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const rating = 4.0 + (hash % 9) / 10;
+  const reviews = 20 + (hash % 150);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Breadcrumb / Back Navigation */}
@@ -73,10 +77,10 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
 
             {/* Ratings & Form */}
             <div className="flex flex-wrap items-center gap-4 mb-6 pb-6 border-b border-border">
-              <div className="flex items-center gap-1.5 bg-primary/10 px-3 py-1.5 rounded-full">
-                <Star className="w-4 h-4 fill-primary text-primary" />
-                <span className="text-sm font-bold text-primary">4.8</span>
-                <span className="text-sm text-primary/70">(124 Reviews)</span>
+              <div className="flex items-center gap-1.5 bg-yellow-400/10 px-3 py-1.5 rounded-full">
+                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                <span className="text-sm font-bold text-yellow-600">{rating.toFixed(1)}</span>
+                <span className="text-sm text-yellow-600/70">({reviews} Reviews)</span>
               </div>
               <div className="h-4 w-px bg-border hidden sm:block" />
               <span className="text-sm font-bold text-foreground bg-secondary px-3 py-1.5 rounded-full uppercase tracking-wider">

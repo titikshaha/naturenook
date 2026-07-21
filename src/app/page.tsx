@@ -144,10 +144,11 @@ function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
         {[1, 2, 3, 4, 5].map((i) => (
           <Star
             key={i}
-            className={`h-3.5 w-3.5 ${i <= Math.round(rating) ? "fill-primary text-primary" : "fill-muted text-muted"}`}
+            className={`h-3.5 w-3.5 ${i <= Math.round(rating) ? "fill-yellow-400 text-yellow-400" : "fill-muted text-muted"}`}
           />
         ))}
       </div>
+      <span className="text-xs font-semibold text-yellow-600">{rating.toFixed(1)}</span>
       <span className="text-xs text-muted-foreground">({reviews})</span>
     </div>
   );
@@ -177,6 +178,10 @@ export default async function Home() {
       if (match.potency) {
         p.potency = match.potency;
       }
+      
+      const hash = match.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      p.rating = 4.0 + (hash % 9) / 10;
+      p.reviews = 20 + (hash % 150);
     }
   }
 
@@ -327,9 +332,9 @@ export default async function Home() {
       <section className="py-10 md:py-14 bg-background">
         <div className="container mx-auto px-4">
           <div className="rounded-2xl bg-secondary/30 border border-border overflow-hidden flex flex-col md:flex-row">
-            <div className="flex-1 p-8 md:p-12 flex flex-col justify-center gap-5">
+            <div className="flex-1 p-6 md:p-8 flex flex-col justify-center gap-5">
               <span className="w-fit rounded-full bg-primary text-primary-foreground px-4 py-1.5 text-sm font-semibold">
-                GET 20% OFF
+                GET FREE shipping
               </span>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
                 Your First Purchase
@@ -345,7 +350,7 @@ export default async function Home() {
               </Link>
             </div>
             <div className="flex-1 min-h-50 md:min-h-0 relative">
-               <Image src="https://res.cloudinary.com/qnvdmapj/image/upload/Moringa1.jpg" alt="Promo" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+               <Image src="https://res.cloudinary.com/qnvdmapj/image/upload/v1784629927/Cream_Olive_Green_Minimalist_Classic_Promotion_Special_Offer_Discount_Banner.png" alt="Promo" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
             </div>
           </div>
         </div>
@@ -408,7 +413,7 @@ export default async function Home() {
             <Link href="/find-us">
               <Button
                 variant="outline"
-                className="w-full sm:w-auto rounded-full px-8 h-11 font-semibold border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground transition-all"
+                className="w-full sm:w-auto rounded-full px-8 h-11 font-semibold border-primary-foreground/40 text-primary-background hover:bg-primary-foreground/10 hover:text-primary-foreground transition-all"
               >
                 Wholesale Inquiry
               </Button>

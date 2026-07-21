@@ -154,6 +154,10 @@ export default async function CataloguePage(props: {
                       const discountAmount = wholesaleMSRP && currentPrice && wholesaleMSRP > currentPrice ? wholesaleMSRP - currentPrice : 0;
                       const discountPercent = wholesaleMSRP && discountAmount > 0 ? Math.round((discountAmount / wholesaleMSRP) * 100) : 0;
 
+                      const hash = String(product.id).split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                      const rating = 4.0 + (hash % 9) / 10;
+                      const reviews = 20 + (hash % 150);
+
                       return (
                         <>
                           <Link href={`/product/${String(product.id)}`} className="relative overflow-hidden group/img aspect-square bg-secondary/40 flex items-center justify-center block">
@@ -189,10 +193,11 @@ export default async function CataloguePage(props: {
                             <div className="flex items-center gap-1.5 mt-1">
                               <div className="flex">
                                 {[1, 2, 3, 4, 5].map((i) => (
-                                  <Star key={i} className={`h-3 w-3 ${i <= 4 ? "fill-primary text-primary" : "fill-muted text-muted"}`} />
+                                  <Star key={i} className={`h-3 w-3 ${i <= Math.round(rating) ? "fill-yellow-400 text-yellow-400" : "fill-muted text-muted"}`} />
                                 ))}
                               </div>
-                              <span className="text-[10px] text-muted-foreground">(42)</span>
+                              <span className="text-[10px] font-semibold text-yellow-600">{rating.toFixed(1)}</span>
+                              <span className="text-[10px] text-muted-foreground">({reviews})</span>
                             </div>
 
                             <div className="mt-auto pt-2">
