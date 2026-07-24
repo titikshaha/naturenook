@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: "Nature Nook | 150+ Premium Herbal & Ayurvedic Powders",
   description: "Shop from India's largest catalogue of premium herbal, Ayurvedic, and nutraceutical powders. GMP certified, wholesale available.",
   alternates: {
-    canonical: "https://naturenook.in",
+    canonical: "https://www.naturenook.co.in",
   },
 };
 

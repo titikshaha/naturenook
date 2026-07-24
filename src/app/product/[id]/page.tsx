@@ -19,7 +19,7 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
   return {
     title: `${product.name} | Nature Nook`,
     description: product.description || `Buy premium ${product.name} online from Nature Nook.`,
-    alternates: { canonical: `https://naturenook.in/product/${product.id}` },
+    alternates: { canonical: `https://www.naturenook.co.in/product/${product.id}` },
     openGraph: {
       title: `${product.name} | Nature Nook`,
       description: product.description || `Buy premium ${product.name} online from Nature Nook.`,
@@ -73,7 +73,7 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
     "brand": { "@type": "Brand", "name": "Nature Nook" },
     "offers": {
       "@type": "Offer",
-      "url": `https://naturenook.in/product/${product.id}`,
+      "url": `https://www.naturenook.co.in/product/${product.id}`,
       "priceCurrency": "INR",
       "price": currentPrice || 0,
       "availability": "https://schema.org/InStock"

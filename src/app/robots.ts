@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/account/'],
     },
-    sitemap: 'https://naturenook.in/sitemap.xml',
+    sitemap: 'https://www.naturenook.co.in/sitemap.xml',
   };
 }

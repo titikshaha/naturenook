@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "About Us | Nature Nook",
   description: "Learn about Nature Nook's journey to becoming India's leading manufacturer of premium herbal powders and Ayurvedic ingredients.",
   alternates: {
-    canonical: "https://naturenook.in/about",
+    canonical: "https://www.naturenook.co.in/about",
   },
 };
 

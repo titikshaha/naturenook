@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "Shop All Powders | Nature Nook Catalogue",
   description: "Browse 150+ premium Ayurvedic, cosmetic, and nutraceutical herbal powders. Wholesale and retail quantities available.",
   alternates: {
-    canonical: "https://naturenook.in/catalogue",
+    canonical: "https://www.naturenook.co.in/catalogue",
   },
 };
 

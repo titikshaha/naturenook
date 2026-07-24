@@ -12,7 +12,7 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://naturenook.in"),
+  metadataBase: new URL("https://www.naturenook.co.in"),
   title: {
     default: "Nature Nook | Premium Herbal & Ayurvedic Powders",
     template: "%s | Nature Nook",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Nature Nook | Premium Herbal & Ayurvedic Powders",
     description: "Manufacturer and distributor of 150+ premium herbal powders.",
-    url: "https://naturenook.in",
+    url: "https://www.naturenook.co.in",
     siteName: "Nature Nook",
     locale: "en_IN",
     type: "website",
@@ -38,10 +38,10 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://naturenook.in/#organization",
+      "@id": "https://www.naturenook.co.in/#organization",
       "name": "Nature Nook",
-      "url": "https://naturenook.in",
-      "logo": "https://naturenook.in/logo.png",
+      "url": "https://www.naturenook.co.in",
+      "logo": "https://www.naturenook.co.in/logo.png",
       "description": "Manufacturing and distributing 150+ premium herbal powders.",
       "contactPoint": {
         "@type": "ContactPoint",
@@ -53,15 +53,15 @@ const jsonLd = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://naturenook.in/#website",
-      "url": "https://naturenook.in",
+      "@id": "https://www.naturenook.co.in/#website",
+      "url": "https://www.naturenook.co.in",
       "name": "Nature Nook",
       "publisher": {
-        "@id": "https://naturenook.in/#organization"
+        "@id": "https://www.naturenook.co.in/#organization"
       },
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://naturenook.in/catalogue?q={search_term_string}",
+        "target": "https://www.naturenook.co.in/catalogue?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }

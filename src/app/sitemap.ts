@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://naturenook.in';
+  const baseUrl = 'https://www.naturenook.co.in';
 
   // Fetch all products
   const products = await prisma.product.findMany({
