@@ -8,7 +8,7 @@
  * Background: diagonal stripe texture + bottom accent bar.
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -85,12 +85,27 @@ function DiagonalStripes({ accent }: { accent: string }) {
 export function TrustStatsCarousel() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   const goTo = useCallback((i: number) => {
     setCurrent(i);
     setPaused(true);
     setTimeout(() => setPaused(false), 8000);
   }, []);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 40) {
+      if (delta > 0) goTo((current + 1) % slides.length);
+      else goTo((current - 1 + slides.length) % slides.length);
+    }
+    touchStartX.current = null;
+  }, [current, goTo]);
 
   useEffect(() => {
     if (paused) return;
@@ -109,8 +124,10 @@ export function TrustStatsCarousel() {
 
       {/* ── Slides ── */}
       <div
-        className="flex transition-transform duration-700 ease-in-out"
+        className="flex transition-transform duration-700 ease-in-out touch-pan-y"
         style={{ transform: `translateX(-${current * 100}%)` }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {slides.map((s, idx) => (
           <div key={idx} className="min-w-full">

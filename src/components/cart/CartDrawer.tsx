@@ -68,15 +68,15 @@ export function CartDrawer() {
             </div>
           ) : (
             cart.items.map((item) => (
-              <div key={item.id} className="flex gap-4 p-4 rounded-xl border border-border bg-secondary/10">
+              <div key={item.id} className="flex gap-3 p-3 rounded-xl border border-border bg-secondary/10">
                 {/* Image */}
-                <div className="h-20 w-20 rounded-md bg-secondary overflow-hidden shrink-0 relative border border-border/50">
+                <div className="h-18 w-18 rounded-md bg-secondary overflow-hidden shrink-0 relative border border-border/50" style={{ width: 72, height: 72 }}>
                   {item.imageUrl ? (
                     <Image
                       src={item.imageUrl}
                       alt={item.name}
                       fill
-                      sizes="80px"
+                      sizes="72px"
                       className="object-contain"
                     />
                   ) : (
@@ -87,7 +87,7 @@ export function CartDrawer() {
                 </div>
 
                 {/* Details */}
-                <div className="flex-1 flex flex-col justify-between">
+                <div className="flex-1 min-w-0 flex flex-col justify-between">
                   <div>
                     <h4 className="font-semibold text-sm line-clamp-2 leading-snug">{item.name}</h4>
                     <p className="text-primary font-semibold text-sm mt-1">
@@ -96,8 +96,8 @@ export function CartDrawer() {
                   </div>
 
                   {/* Controls */}
-                  <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center gap-3 border border-border rounded-full px-2 py-1 bg-background">
+                  <div className="flex items-center justify-between mt-2 gap-2">
+                    <div className="flex items-center gap-2 border border-border rounded-full px-2 py-1 bg-background shrink-0">
                       <button 
                         onClick={() => cart.updateQuantity(item.id, item.quantity - 1)}
                         className="text-muted-foreground hover:text-foreground transition-colors"
@@ -116,13 +116,14 @@ export function CartDrawer() {
 
                     <button 
                       onClick={() => cart.removeItem(item.id)}
-                      className="text-red-500 hover:text-red-600 transition-colors bg-red-500/10 p-1.5 rounded-full"
+                      className="text-red-500 hover:text-red-600 transition-colors bg-red-500/10 p-1.5 rounded-full shrink-0"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
               </div>
+
             ))
           )}
         </div>

@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // @ts-ignore - new setting from Next.js warning
+  allowedDevOrigins: ['192.168.29.164'],
   images: {
     remotePatterns: [
       {

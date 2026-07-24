@@ -52,10 +52,12 @@ export default function AboutPage() {
                 We specialize in over 150 premium botanical products — ranging from staples like Ashwagandha and Tulsi to highly specialized compounds like Gymnema Sylvestre and Boswellia Serrata. Whether it's for Ayurvedic medicine, cosmetics, or nutraceuticals, our powders guarantee consistent active compound profiles batch after batch.
               </p>
             </div>
-            <div className="relative aspect-square md:aspect-auto md:h-full min-h-[400px] rounded-2xl overflow-hidden bg-secondary/30 border border-border flex items-center justify-center">
+            {/* Image — hidden on mobile to prevent horizontal overflow */}
+            <div className="hidden md:flex relative aspect-square md:aspect-auto md:h-full min-h-[400px] rounded-2xl overflow-hidden bg-secondary/30 border border-border items-center justify-center">
               <Leaf className="w-32 h-32 text-primary/20" />
             </div>
           </div>
+
         </div>
       </section>
 

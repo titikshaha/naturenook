@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, LeafyGreen } from "lucide-react";
@@ -65,13 +65,50 @@ function CirclePattern() {
 export function MixedHeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
-  const totalSlides = 6;
+  const [isMobile, setIsMobile] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+
+  // Detect mobile (< 768px) — only 3 content slides shown, banners hidden
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // Mobile: slides 0,1,2 = Hero, Terracotta, GreenGrid
+  // Desktop: slides 0..5 = Hero, Banner1, Terracotta, Banner2, GreenGrid, Banner3
+  const totalSlides = isMobile ? 3 : 6;
+
+  // Map mobile index → actual slide visual index (for dot color logic)
+  // mobile 0→1, mobile 1→3, mobile 2→5 (1-indexed positions in the 6-slide deck)
+  // For color: terracotta is desktop slide 2 = mobile slide 1
+  const isTerracotta = isMobile ? current === 1 : current === 2;
 
   const goTo = useCallback((i: number) => {
     setCurrent(i);
     setPaused(true);
     setTimeout(() => setPaused(false), 6000);
   }, []);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 40) {
+      if (delta > 0) goTo((current + 1) % totalSlides);
+      else goTo((current - 1 + totalSlides) % totalSlides);
+    }
+    touchStartX.current = null;
+  }, [current, goTo, totalSlides]);
+
+  // Reset current to 0 when switching between mobile/desktop to avoid out-of-range index
+  useEffect(() => {
+    setCurrent(0);
+  }, [isMobile]);
 
   useEffect(() => {
     if (paused) return;
@@ -84,8 +121,10 @@ export function MixedHeroCarousel() {
       
       {/* ── Slide Track ── */}
       <div
-        className="flex transition-transform duration-700 ease-in-out"
+        className="flex transition-transform duration-700 ease-in-out touch-pan-y"
         style={{ transform: `translateX(-${current * 100}%)` }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/* ================================================================= */}
         {/* SLIDE 1: Hero Split Layout (Sage Green)                           */}
@@ -142,11 +181,13 @@ export function MixedHeroCarousel() {
         </div>
 
         {/* ================================================================= */}
-        {/* SLIDE 2: Banner 1                                                 */}
+        {/* SLIDE 2: Banner 1 — desktop only                                  */}
         {/* ================================================================= */}
-        <div className="min-w-full relative bg-secondary/10 overflow-hidden flex items-center justify-center">
-          <img src="/banner1.png" alt="Promo Banner 1" className="w-full h-full object-cover object-center max-h-[420px] lg:max-h-[500px]" />
-        </div>
+        {!isMobile && (
+          <div className="min-w-full relative bg-secondary/10 overflow-hidden flex items-center justify-center">
+            <img src="/banner1.png" alt="Promo Banner 1" className="w-full h-full object-cover object-center max-h-[420px] lg:max-h-[500px]" />
+          </div>
+        )}
 
         {/* ================================================================= */}
         {/* SLIDE 3: Editorial Center Text (Color Scheme: Deep Terracotta)    */}
@@ -198,11 +239,13 @@ export function MixedHeroCarousel() {
         </div>
 
         {/* ================================================================= */}
-        {/* SLIDE 4: Banner 2                                                 */}
+        {/* SLIDE 4: Banner 2 — desktop only                                  */}
         {/* ================================================================= */}
-        <div className="min-w-full relative bg-secondary/10 overflow-hidden flex items-center justify-center">
-          <img src="/banner2.png" alt="Promo Banner 2" className="w-full h-full object-cover object-center max-h-[420px] lg:max-h-[500px]" />
-        </div>
+        {!isMobile && (
+          <div className="min-w-full relative bg-secondary/10 overflow-hidden flex items-center justify-center">
+            <img src="/banner2.png" alt="Promo Banner 2" className="w-full h-full object-cover object-center max-h-[420px] lg:max-h-[500px]" />
+          </div>
+        )}
 
         {/* ================================================================= */}
         {/* SLIDE 5: Green Text Grid Layout (White Background)                */}
@@ -286,27 +329,21 @@ export function MixedHeroCarousel() {
         </div>
 
         {/* ================================================================= */}
-        {/* SLIDE 6: Banner 3                                                 */}
+        {/* SLIDE 6: Banner 3 — desktop only                                  */}
         {/* ================================================================= */}
-        <div className="min-w-full relative bg-secondary/10 overflow-hidden flex items-center justify-center">
-          <img src="/banner3.png" alt="Promo Banner 3" className="w-full h-full object-cover object-center max-h-[420px] lg:max-h-[500px]" />
-        </div>
+        {!isMobile && (
+          <div className="min-w-full relative bg-secondary/10 overflow-hidden flex items-center justify-center">
+            <img src="/banner3.png" alt="Promo Banner 3" className="w-full h-full object-cover object-center max-h-[420px] lg:max-h-[500px]" />
+          </div>
+        )}
 
       </div>
 
-      {/* ── Radio dots (absolute at bottom center) ── */}
+      {/* ── Radio dots ── */}
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-20">
         {Array.from({ length: totalSlides }).map((_, i) => {
-          // Slide 0: Sage Green (primary)
-          // Slide 1: Banner 1 (white/gray/primary)
-          // Slide 2: Terracotta (#e48a5c)
-          // Slide 3: Banner 2 
-          // Slide 4: Green Text (primary)
-          // Slide 5: Banner 3
-          
-          const getActiveColor = (index: number) => index === 2 ? "#e48a5c" : "hsl(var(--primary))";
-          const getInactiveColor = (index: number) => index === 2 ? "rgba(228, 138, 92, 0.4)" : "hsla(var(--primary), 0.4)";
-          
+          const getActiveColor = () => isTerracotta ? "#e48a5c" : "hsl(var(--primary))";
+          const getInactiveColor = () => isTerracotta ? "rgba(228, 138, 92, 0.4)" : "hsla(var(--primary), 0.4)";
           return (
             <button
               key={i}
@@ -315,7 +352,7 @@ export function MixedHeroCarousel() {
               onClick={() => goTo(i)}
               className={`h-2 rounded-full transition-all duration-300 shadow-sm ${i === current ? "w-7" : "w-2"}`}
               style={{
-                background: i === current ? getActiveColor(current) : getInactiveColor(current)
+                background: i === current ? getActiveColor() : getInactiveColor()
               }}
             />
           );

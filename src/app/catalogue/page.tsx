@@ -4,6 +4,7 @@ import { Filter, Search, Star, ShoppingCart } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { getProductDataFromCSV } from "@/lib/csvParser";
+import { MobileFilterBar } from "@/components/catalogue/MobileFilterBar";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 import Fuse from "fuse.js";
@@ -90,8 +91,10 @@ export default async function CataloguePage(props: {
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           
-          {/* Filters Sidebar */}
-          <aside className="w-full lg:w-64 shrink-0 space-y-8">
+          {/* ─────────────────────────────────────────────────────────────
+              DESKTOP sidebar filters — hidden on mobile
+          ───────────────────────────────────────────────────────────── */}
+          <aside className="hidden lg:block w-64 shrink-0 space-y-8">
             <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-5 pb-4 border-b border-border">
                 <Filter className="w-5 h-5 text-primary" />
@@ -148,7 +151,10 @@ export default async function CataloguePage(props: {
 
           {/* Product Grid */}
           <div className="flex-1 w-full">
-            
+
+            {/* ── MOBILE filter bar — compact dropdowns at top ── */}
+            <MobileFilterBar category={category} form={form} />
+
             {/* Active Filters Summary */}
             <div className="mb-6 flex items-center justify-between">
               <p className="text-sm text-muted-foreground">

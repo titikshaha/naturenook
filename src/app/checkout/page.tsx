@@ -39,7 +39,7 @@ export default function CheckoutPage() {
   }
 
   const subtotal = cart.getCartTotal();
-  const tax = subtotal * 0.18; // Mock 18% GST
+  const tax = subtotal * 0.5; // Mock 18% GST
   const total = subtotal + tax;
 
   const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -227,7 +227,7 @@ export default function CheckoutPage() {
                   <span className="text-green-600 font-semibold">Free</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Estimated Tax (18%)</span>
+                  <span className="text-muted-foreground">Estimated Tax (5%)</span>
                   <span className="font-semibold">₹{tax.toLocaleString()}</span>
                 </div>
                 

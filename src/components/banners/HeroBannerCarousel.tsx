@@ -31,7 +31,7 @@ const slides = [
     headlineAccent: "of Ashwagandha",
     headlineBottom: "Standardized",
     body: "Sourced from premium Indian roots, our Ashwagandha powder delivers consistent adaptogenic benefits. Batch-tested COA available.",
-    cta1: { label: "View powder", href: "/product/1" },
+    cta1: { label: "View powder", href: "powdercmrw0c3yk00102kpfxavvnrji" },
     cta2: { label: "Request Sample", href: "/vendor" },
     imageSrc: "/hero-ashwagandha.png",
     imageMobile: "/hero-ashwagandha-m.png",

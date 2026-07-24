@@ -58,7 +58,9 @@ async function main() {
 
   console.log(`Found ${rows.length} products in CSV.`);
 
-  // Clear existing products
+  // Clear existing products and their dependencies to avoid foreign key constraints
+  await prisma.orderItem.deleteMany({});
+  await prisma.order.deleteMany({});
   await prisma.product.deleteMany({});
   console.log("Cleared old products.");
 

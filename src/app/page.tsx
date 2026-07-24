@@ -311,7 +311,32 @@ export default async function Home() {
             </h2>
           </div>
 
-          <div className="flex items-start justify-center gap-5 md:gap-12 overflow-x-auto pb-2 [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden">
+          {/* Mobile: 2×2 grid — Desktop: single row */}
+          <div className="grid grid-cols-2 gap-4 md:hidden">
+            {[
+              { label: "All", href: "/catalogue", count: "60+", image: "/logo2.png" },
+              ...categories.map((c) => ({ label: c.label, href: c.href, count: "20+", image: c.image })),
+            ].map((cat) => (
+              <Link
+                key={cat.label}
+                href={cat.href}
+                className="group flex flex-col items-center gap-3"
+              >
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-border group-hover:border-primary transition-colors duration-200">
+                  <img src={cat.image} alt={cat.label} className="w-full h-full object-cover" />
+                </div>
+                <div className="text-center">
+                  <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                    {cat.label}
+                  </p>
+                  <p className="text-xs text-muted-foreground">{cat.count} Products</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop: single row */}
+          <div className="hidden md:flex items-start justify-center gap-12 overflow-x-auto pb-2 [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden">
             {[
               { label: "All", href: "/catalogue", count: "60+", image: "/logo2.png" },
               ...categories.map((c) => ({ label: c.label, href: c.href, count: "20+", image: c.image })),
@@ -321,11 +346,11 @@ export default async function Home() {
                 href={cat.href}
                 className="group flex flex-col items-center gap-3 shrink-0"
               >
-                <div className="w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-border group-hover:border-primary transition-colors duration-200">
+                <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-border group-hover:border-primary transition-colors duration-200">
                   <img src={cat.image} alt={cat.label} className="w-full h-full object-cover" />
                 </div>
                 <div className="text-center">
-                  <p className="text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors">
+                  <p className="text-base font-semibold text-foreground group-hover:text-primary transition-colors">
                     {cat.label}
                   </p>
                   <p className="text-xs text-muted-foreground">{cat.count} Products</p>
@@ -333,6 +358,7 @@ export default async function Home() {
               </Link>
             ))}
           </div>
+
         </div>
       </section>
 
