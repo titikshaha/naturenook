@@ -22,7 +22,13 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
   const csvData = getProductDataFromCSV(product.name);
   
   // Combine all images
-  const allImages = csvData?.images?.length ? csvData.images : (product.imageUrl ? [product.imageUrl] : []);
+  let allImages = csvData?.images?.length ? csvData.images : (product.imageUrl ? [product.imageUrl] : []);
+
+  // TEMP: Remove the second image (back cover) for all products
+  // To restore the second images, simply comment out or remove the block below:
+  if (allImages.length > 1) {
+    allImages = [allImages[0], ...allImages.slice(2)];
+  }
 
   // Calculate pricing
   const wholesaleMSRP = csvData?.wholesalePrice || product.price;
