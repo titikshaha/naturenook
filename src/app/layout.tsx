@@ -3,6 +3,7 @@ import { Raleway } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const raleway = Raleway({
   variable: "--font-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <GoogleAnalytics gaId="G-75J24B9TXG" />
       </body>
     </html>
   );
