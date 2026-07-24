@@ -5,6 +5,9 @@ import { Leaf, Clock, ArrowLeft, MailCheck } from "lucide-react";
 export const metadata = {
   title: "Wholesale Portal (Coming Soon) | Nature Nook",
   description: "Our dedicated B2B and Wholesale portal is currently under construction.",
+  alternates: {
+    canonical: "https://naturenook.in/vendor",
+  },
 };
 
 export default function VendorComingSoonPage() {

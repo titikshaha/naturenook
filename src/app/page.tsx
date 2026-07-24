@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MixedHeroCarousel } from "@/components/banners/MixedHeroCarousel";
 import { TrustStatsCarousel } from "@/components/banners/TrustStatsCarousel";
+import { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import {
   FlaskConical,
@@ -13,6 +14,14 @@ import {
   Star,
   ShoppingCart,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Nature Nook | 150+ Premium Herbal & Ayurvedic Powders",
+  description: "Shop from India's largest catalogue of premium herbal, Ayurvedic, and nutraceutical powders. GMP certified, wholesale available.",
+  alternates: {
+    canonical: "https://naturenook.in",
+  },
+};
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 

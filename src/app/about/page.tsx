@@ -1,6 +1,16 @@
 import Image from "next/image";
 import { Leaf, ShieldCheck, FlaskConical, Globe } from "lucide-react";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us | Nature Nook",
+  description: "Learn about Nature Nook's journey to becoming India's leading manufacturer of premium herbal powders and Ayurvedic ingredients.",
+  alternates: {
+    canonical: "https://naturenook.in/about",
+  },
+};
+
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen">

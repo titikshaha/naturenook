@@ -8,6 +8,26 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { getProductDataFromCSV } from "@/lib/csvParser";
 import { ShoppingCart, Star, ShieldCheck, Truck, ArrowLeft, CheckCircle2 } from "lucide-react";
 
+import { Metadata } from "next";
+
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const params = await props.params;
+  const product = await prisma.product.findUnique({ where: { id: params.id } });
+  
+  if (!product) return { title: "Product Not Found | Nature Nook" };
+  
+  return {
+    title: `${product.name} | Nature Nook`,
+    description: product.description || `Buy premium ${product.name} online from Nature Nook.`,
+    alternates: { canonical: `https://naturenook.in/product/${product.id}` },
+    openGraph: {
+      title: `${product.name} | Nature Nook`,
+      description: product.description || `Buy premium ${product.name} online from Nature Nook.`,
+      images: product.imageUrl ? [{ url: product.imageUrl }] : [],
+    }
+  };
+}
+
 export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const product = await prisma.product.findUnique({
@@ -44,8 +64,30 @@ export default async function ProductPage(props: { params: Promise<{ id: string 
   const rating = 4.0 + (hash % 9) / 10;
   const reviews = 20 + (hash % 150);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "image": allImages,
+    "description": csvData?.fullDescription || product.description || `Buy premium ${product.name} online.`,
+    "brand": { "@type": "Brand", "name": "Nature Nook" },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://naturenook.in/product/${product.id}`,
+      "priceCurrency": "INR",
+      "price": currentPrice || 0,
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": rating.toFixed(1),
+      "reviewCount": reviews
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Breadcrumb / Back Navigation */}
       <div className="border-b border-border bg-secondary/10">
         <div className="container mx-auto px-4 py-3 flex items-center text-sm text-muted-foreground">

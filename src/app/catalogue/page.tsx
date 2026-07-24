@@ -8,6 +8,16 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 import Fuse from "fuse.js";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Shop All Powders | Nature Nook Catalogue",
+  description: "Browse 150+ premium Ayurvedic, cosmetic, and nutraceutical herbal powders. Wholesale and retail quantities available.",
+  alternates: {
+    canonical: "https://naturenook.in/catalogue",
+  },
+};
+
 export const dynamic = "force-dynamic";
 
 export default async function CataloguePage(props: {
